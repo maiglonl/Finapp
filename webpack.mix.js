@@ -11,5 +11,10 @@ const { mix } = require('laravel-mix');
  |
  */
 
-mix.js('resources/assets/js/app.js', 'public/js')
-   .sass('resources/assets/sass/app.scss', 'public/css');
+mix.sass('resources/assets/admin/sass/admin.scss', 'public/css')
+   .copy('node_modules/materialize-css/fonts/roboto/', 'public/fonts/roboto/');
+
+mix.browserSync({
+	host: 'localhost',
+	proxy: 'http://127.0.0.1:8000'
+});

@@ -11,8 +11,6 @@
 |
 */
 
-use Illuminate\Support\Facades\Gate;
-
 Route::get('/client', function () {
 	\Illuminate\Support\Facades\Auth::loginUsingId(2);
 });
@@ -27,7 +25,20 @@ Route::get('/home', function () {
 
 Route::group(['prefix' => 'admin', 'as' => 'admin.'], function(){
 
-	Auth::routes();
+	// Authentication Routes...
+	Route::get('login', 'Auth\LoginController@showLoginForm')->name('login');
+	Route::post('login', 'Auth\LoginController@login');
+	Route::post('logout', 'Auth\LoginController@logout')->name('logout');
+
+	// Registration Routes...
+	Route::get('register', 'Auth\RegisterController@showRegistrationForm')->name('register');
+	Route::post('register', 'Auth\RegisterController@register');
+
+	// Password Reset Routes...
+	Route::get('password/reset', 'Auth\ForgotPasswordController@showLinkRequestForm')->name('password.reset');
+	Route::post('password/email', 'Auth\ForgotPasswordController@sendResetLinkEmail');
+	Route::get('password/reset/{token}', 'Auth\ResetPasswordController@showResetForm');
+	Route::post('password/reset', 'Auth\ResetPasswordController@reset');
 
 	Route::group(['middleware' => 'can:access-admin'], function(){
 		Route::get('/home', 'HomeController@index')->name('home');

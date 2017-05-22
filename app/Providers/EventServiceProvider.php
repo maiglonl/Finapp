@@ -13,7 +13,7 @@ class EventServiceProvider extends ServiceProvider
      * @var array
      */
     protected $listen = [
-        'Finapp\Events\Event' => [
+        'Finapp\Events\SomeEvent' => [
             'Finapp\Listeners\EventListener',
         ],
     ];
