@@ -2,8 +2,9 @@ var webpack = require('webpack');
 
 module.exports ={
 	entry: {
-		admin: 'resources/assets/admin/js/admin.js'
+		admin: './resources/assets/admin/js/admin.js'
 	},
+	//externals: ['axios'],
 	resolve: {
 		alias: {
 			vue: 'vue/dist/vue.js'
@@ -12,7 +13,7 @@ module.exports ={
 	output: {
 		path: __dirname + '/public/build',
 		filename: '[name].bundle.js',
-		publicPath: '/dist/'
+		publicPath: '/build/'
 	},
 	plugins: [
 		new webpack.ProvidePlugin({
