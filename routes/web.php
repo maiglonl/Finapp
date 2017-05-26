@@ -19,6 +19,10 @@ Route::get('/', function () {
 	return view('welcome');
 });
 
+Route::get('/app', function () {
+	return view('layouts.spa');
+});
+
 Route::get('/home', function () {
 	return redirect()->route('admin.home');
 });

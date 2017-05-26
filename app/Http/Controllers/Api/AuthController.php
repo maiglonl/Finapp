@@ -65,6 +65,7 @@ class AuthController extends Controller{
 			'user' => Auth::user()->name
 		], 200);
 	}
+
 	 /**
 	 * Log the user out of the application.
 	 *

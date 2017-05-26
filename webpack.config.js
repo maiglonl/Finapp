@@ -2,7 +2,8 @@ var webpack = require('webpack');
 
 module.exports ={
 	entry: {
-		admin: './resources/assets/admin/js/admin.js'
+		admin: './resources/assets/admin/js/admin.js',
+		spa: './resources/assets/spa/js/spa.js'
 	},
 	//externals: ['axios'],
 	resolve: {
