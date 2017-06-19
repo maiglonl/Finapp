@@ -3,10 +3,17 @@
 		<div class="row">
 			<div class="col s6 offset-s3 z-depth-2">
 				<h3 class="center">Finapp</h3>
+				<div class="row" v-if="error.error">
+					<div class="col s12">
+						<div class="card-panel red">
+							<span class="white-text">{{ error.message }}</span>
+						</div>
+					</div>
+				</div>
 				<form method="POST" @submit.prevent="login()">
 					<div class="row">
 						<div class="input-field col s12">
-							<input id="email" type="email" class="validate" name="email" v-model="user.email" required>
+							<input id="email" type="text" class="validate" name="email" v-model="user.email" required>
 							<label for="email">E-mail</label>
 						</div>
 					</div>
@@ -30,26 +37,29 @@
 </template>
 
 <script type="text/javascript">
-	import {Jwt} from '../resources';
+	import Auth from '../services/auth';
 	export default {
 		data(){
 			return {
-				user: {
-					email: '',
-					password: ''
-				}
+				user: { email: '', password: '' },
+				error: { message: '', error: false }
 			}
 		},
 		methods: {
 			login(){
-
-				console.log({
-					email: this.user.email,
-					password: this.user.password
-				});
-				Jwt.accessToken(this.user.email, this.user.password).then((response) => {
-					console.log(response);
-				});
+				Auth.login(this.user.email, this.user.password)
+					.then(() => this.$router.push({ name: 'dashboard' }))
+					.catch((responseError) => {
+						switch(responseError.status){
+							case 401:
+								this.error.message = responseError.data.message;
+								break;
+							default:
+								this.error.message = "Login failure!"
+								break;
+						}
+						this.error.error = true;
+					});
 			}
 		}
 	};

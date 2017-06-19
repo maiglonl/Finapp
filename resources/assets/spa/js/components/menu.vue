@@ -18,7 +18,7 @@
 							</li>
 							<li>
 								<a href="!#" class="dropdownBtn" data-activates="dropdownLogout">
-									{{ config.name }}<i class="material-icons right">arrow_drop_down</i>
+									{{ name }}<i class="material-icons right">arrow_drop_down</i>
 								</a>
 							</li>
 						</ul>
@@ -28,7 +28,7 @@
 		</nav>
 		<ul id="navMobile" class="side-nav">
 			<li v-for="menu in config.menus">
-				<a :href="menu.url" class="dropdownBtn">{{ menu.name }}</a>
+				{{ name }}<a :href="menu.url" class="dropdownBtn">{{ menu.name }}</a>
 			</li>
 		</ul>
 		<ul :id="dropMenu.id" class="dropdown-content" v-for="dropMenu in config.menusDropdown">
@@ -38,17 +38,14 @@
 		</ul>
 		<ul id="dropdownLogout" class="dropdown-content">
 			<li>
-				<a :href="config.urlLogout" @click.prevent="goToLogout()" class="dropdownBtn">Logout</a>
-
-				<form id="logout-form" :action="config.urlLogout" method="POST" style="display: none;">
-					<input type="hidden" name="_token" :value="config.csrfToken"/>
-				</form>
+				<router-link :to="{ name: 'logout' }">Logout</router-link>
 			</li>
 		</ul>
 	</div>
 </template>
 
 <script type="text/javascript">
+	import Auth from '../services/auth';
 	export default {
 		props: {
 			config: {
@@ -56,23 +53,43 @@
 				default(){
 					return {
 						name: '',
-						menus: [],
-						menusDropdown: [],
-						urlLogout: '/admin/logout'
+						menus: [
+							{ name: "Contas a pagar", dropdownId: 'billPayMenu'},
+							{ name: "Contas a receber", dropdownId: 'billReceiveMenu'},
+						],
+						menusDropdown: [
+							{
+								id: 'billPayMenu',
+								items: [
+									{ name: "Cadastrar Conta", routeName: 'auth.login' },
+									{ name: "Listar Contas", routeName: 'auth.login' },
+								]
+							},{
+								id: 'billReceiveMenu',
+								items: [
+									{ name: "Cadastrar Conta", routeName: 'auth.login' },
+									{ name: "Listar Contas", routeName: 'auth.login' },
+								]
+							},
+						]
 					}
 				}
 			}
 		},
+		data(){
+			return {
+				user: Auth.user
+			}
+		},
+		computed: {
+			name(){
+				return this.user.data ? this.user.data.name : 'User';
+			}
+		},
 		mounted(){
-			console.log(this.config.menusDropdown.items);
 			$("#navMobileBtn").sideNav();
 			$(".dropdownBtn").dropdown();
 			//$('.modal').modal();
-		},
-		methods: {
-			goToLogout(){
-				$("#logout-form").submit();
-			}
 		}
 	};
 </script>
