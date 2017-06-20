@@ -47,7 +47,7 @@ class LoginController extends Controller
     protected function credentials(Request $request)
     {
         $data = $request->only($this->username(), 'password');
-        $data['role'] = \Finapp\User::ROLE_ADMIN;
+        $data['role'] = \Finapp\Models\User::ROLE_ADMIN;
         return $data;
     }
 

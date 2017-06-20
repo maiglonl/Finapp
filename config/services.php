@@ -30,7 +30,7 @@ return [
     ],
 
     'stripe' => [
-        'model' => Finapp\User::class,
+        'model' => \Finapp\Models\User::class,
         'key' => env('STRIPE_KEY'),
         'secret' => env('STRIPE_SECRET'),
     ],

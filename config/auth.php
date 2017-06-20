@@ -67,7 +67,7 @@ return [
 	'providers' => [
 		'users' => [
 			'driver' => 'eloquent',
-			'model' => Finapp\User::class,
+			'model' => \Finapp\Models\User::class,
 		],
 
 		// 'users' => [

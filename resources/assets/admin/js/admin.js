@@ -16,4 +16,5 @@ window.Vue = require('vue');
 
 Vue.component('example', require('./components/Example.vue'));
 Vue.component('admin-menu', require('./components/adminMenu.vue'));
+Vue.component('delete-action', require('./components/DeleteAction.vue'));
 

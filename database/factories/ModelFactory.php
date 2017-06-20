@@ -12,7 +12,7 @@
 */
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
-$factory->define(Finapp\User::class, function (Faker\Generator $faker) {
+$factory->define(\Finapp\Models\User::class, function (Faker\Generator $faker) {
     static $password;
 
     return [
@@ -23,10 +23,17 @@ $factory->define(Finapp\User::class, function (Faker\Generator $faker) {
     ];
 });
 
-$factory->state(\Finapp\User::class, 'admin', function (Faker\Generator $faker) {
+$factory->state(\Finapp\Models\User::class, 'admin', function (Faker\Generator $faker) {
     static $password;
 
     return [
-        'role' => \Finapp\User::ROLE_ADMIN,
+        'role' => \Finapp\Models\User::ROLE_ADMIN,
+    ];
+});
+
+$factory->define(\Finapp\Models\Bank::class, function (Faker\Generator $faker) {
+    return [
+        'name' => $faker->name,
+        'logo' => md5(time()).'.jpeg'
     ];
 });

@@ -42,15 +42,23 @@
 					menus: {
 						'name': "{{ Auth::user()->name }}",
 						'menus': [
-							{'name': 'Contas a pagar', 'url': '/home', 'dropdownId': 'teste'},
-							{'name': 'Contas a receber', 'url': '/teste1'}
+							{'name': 'teste', 'url': '/home', 'dropdownId': 'teste'},
+							{
+								'name': 'Bancos', 
+								'url': '{{ route('admin.banks.index') }}',
+								'active': {{ isRouteActive('admin.banks.index') }}
+							}
 						],
 						'menusDropdown': [
 							{
 								'id': 'teste',
 								'items': [
 									{'name': 'Listar contas', 'url': '/listar'},
-									{'name': 'Criar conta', 'url': '/criar'}
+									{
+										'name': 'Bancos', 
+										'url': '{{ route('admin.banks.index') }}',
+										'active': {{ isRouteActive('admin.banks.index') }}
+									}
 								]
 							}
 						],

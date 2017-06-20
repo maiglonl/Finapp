@@ -12,7 +12,7 @@ class UsersTableSeeder extends Seeder
 	 */
 	public function run()
 	{
-		factory(\Finapp\User::class, 1)
+		factory(\Finapp\Models\User::class, 1)
 			->states('admin')
 			->create([
 				'name' => 'Maiglon Lubacheuski',
@@ -20,7 +20,7 @@ class UsersTableSeeder extends Seeder
 			]
 		);
 
-		factory(\Finapp\User::class, 1)
+		factory(\Finapp\Models\User::class, 1)
 			->create([
 				'email' => 'client@user.com'
 			]

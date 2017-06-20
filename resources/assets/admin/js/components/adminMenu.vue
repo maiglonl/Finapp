@@ -9,7 +9,7 @@
 							<i class="material-icons">menu</i>
 						</a>
 						<ul class="right hide-on-med-and-down">
-							<li v-for="menu in config.menus">
+							<li v-for="menu in config.menus" :class="menuItemClass(menu)">
 								<a href="!#" v-if="menu.dropdownId" class="dropdownBtn" :data-activates="menu.dropdownId">
 									{{ menu.name }}
 									<i class="material-icons right">arrow_drop_down</i>
@@ -32,7 +32,7 @@
 			</li>
 		</ul>
 		<ul :id="dropMenu.id" class="dropdown-content" v-for="dropMenu in config.menusDropdown">
-			<li v-for="submenu in dropMenu.items">
+			<li v-for="submenu in dropMenu.items" :class="menuItemClass(submenu)">
 				<a :href="submenu.url" class="dropdownBtn">{{ submenu.name }}</a>
 			</li>
 		</ul>
@@ -64,7 +64,6 @@
 			}
 		},
 		mounted(){
-			console.log(this.config.menusDropdown.items);
 			$("#navMobileBtn").sideNav();
 			$(".dropdownBtn").dropdown();
 			//$('.modal').modal();
@@ -72,6 +71,25 @@
 		methods: {
 			goToLogout(){
 				$("#logout-form").submit();
+			},
+			menuItemClass(menu){
+				let menuClass = [];
+				if(menu.active){
+					menuClass = ['active'];
+				}
+				if(menu.dropdownId !== undefined){
+					let dropdown = this.config.menusDropdown.find((elemento)=>{
+						return elemento.id == menu.dropdownId;
+					});
+					if(dropdown){
+						dropdown.items.forEach((val, key) => {
+							if(val.active){
+								menuClass = ['active'];
+							}
+						});
+					}
+				}
+				return menuClass;
 			}
 		}
 	};

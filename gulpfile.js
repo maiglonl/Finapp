@@ -8,7 +8,7 @@ const mergeWebpack = require('webpack-merge');
 const env = require('gulp-env');
 const stringifyObject = require('stringify-object');
 const gulpFile = require('gulp-file');
-
+const HOST = "localhost"
 
 gulp.task('spa-config', () =>{
 	env({
@@ -25,7 +25,7 @@ gulp.task('webpack-dev-server', () =>{
 	let config = mergeWebpack(webpackConfig, webpackDevConfig);
 	let inlineHot = [
 		'webpack/hot/dev-server',
-		'webpack-dev-server/client?http://127.0.0.1:8080'
+		`webpack-dev-server/client?http://${HOST}:8080`
 	];
 
 	config.entry.admin = [config.entry.admin].concat(inlineHot);
@@ -33,14 +33,14 @@ gulp.task('webpack-dev-server', () =>{
 
 	new WebpackDevServer(webpack(config), {
 		hot: true,
-		proxy: { "*": 'http://127.0.0.1:8000' },
+		proxy: { "*": `http://${HOST}:8000` },
 		watchOptions: {
 			poll: true,
 			aggregateTimeout: 300
 		},
 		publicPath: config.output.publicPath,
 		stats: { colors: true }
-	}).listen(8080, "localhost", () => {
+	}).listen(8080, HOST, () => {
 		console.log("Bundling project...")
 	});
 })
@@ -53,7 +53,7 @@ elixir((mix) => {
 	gulp.start('spa-config','webpack-dev-server');
 
 	mix.browserSync({
-		host: 'localhost',
-		proxy: 'http://127.0.0.1:8080'
+		host: HOST,
+		proxy: `http://${HOST}:8080`
 	});
 });

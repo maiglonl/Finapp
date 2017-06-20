@@ -2,7 +2,7 @@
 
 namespace Finapp\Http\Controllers\Auth;
 
-use Finapp\User;
+use Finapp\Models\User;
 use Finapp\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
@@ -58,7 +58,7 @@ class RegisterController extends Controller
      * Create a new user instance after a valid registration.
      *
      * @param  array  $data
-     * @return User
+     * @return \Finapp\Models\User
      */
     protected function create(array $data)
     {
