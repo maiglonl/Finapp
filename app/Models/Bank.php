@@ -8,11 +8,18 @@ use Prettus\Repository\Traits\TransformableTrait;
 
 class Bank extends Model implements Transformable
 {
-    use TransformableTrait;
+	use TransformableTrait;
 
-    protected $fillable = [
-    	'name',
-    	'logo'
-    ];
+	protected $fillable = [
+		'name',
+		'logo'
+	];
 
+	public static function logosDir(){
+		return 'banks/images';
+	}
+
+	public function getLogoPathAttribute(){
+		return "storage/banks/images/$this->logo";
+	}
 }

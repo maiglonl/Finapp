@@ -10,7 +10,8 @@
 					$bank, 
 					[
 						'route' => ['admin.banks.update', 'bank' => $bank->id],
-						'method' => 'PUT'
+						'method' => 'PUT',
+						'files' => true
 					]
 				) 
 			!!}

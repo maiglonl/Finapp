@@ -18,7 +18,7 @@
     "laravel-elixir-webpack-official": "^1.0.2",
     "materialize-css": "^0.98.2",
     "stringify-object": "^3.2.0",
-    "vue": "^2.0.1",
+    "vue": "2.3.3",
     "vue-resource": "^1.0.3",
     "vue-router": "^2.5.3",
     "webpack": "^2.6.0",

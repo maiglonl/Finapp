@@ -7,3 +7,8 @@
 
 // Bootstrap
 @import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
+
+// [Fix] Text inputs custom error message
+label[data-error]:after {
+	white-space: nowrap;
+}

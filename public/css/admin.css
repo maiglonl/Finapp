@@ -11074,4 +11074,13 @@ main {
   flex: 1 0 auto;
 }
 
+label[data-error]:after {
+  white-space: nowrap;
+}
+
+.bank-logo {
+  width: 22px;
+  height: 22px;
+}
+
 /*# sourceMappingURL=admin.css.map */

@@ -30,10 +30,3 @@ $factory->state(\Finapp\Models\User::class, 'admin', function (Faker\Generator $
         'role' => \Finapp\Models\User::ROLE_ADMIN,
     ];
 });
-
-$factory->define(\Finapp\Models\Bank::class, function (Faker\Generator $faker) {
-    return [
-        'name' => $faker->name,
-        'logo' => md5(time()).'.jpeg'
-    ];
-});

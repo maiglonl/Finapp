@@ -20,3 +20,13 @@
 main{
 	flex: 1 0 auto;
 }
+
+// [Fix] Text inputs custom error message
+label[data-error]:after {
+	white-space: nowrap;
+}
+
+.bank-logo{
+	width: 22px;
+	height: 22px;
+}
