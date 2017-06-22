@@ -1,5 +1,10 @@
 <template> 
 	<div id="app">
+		<div class="spiner-fixed" v-if="loading">
+			<div class="spinner">
+				<div class="indeterminate"></div>
+			</div>
+		</div>
 		<header>
 			<appMenu v-if="showMenu"></appMenu>
 		</header>
@@ -25,10 +30,17 @@
 		components: {
 			'appMenu' : MenuComponent
 		},
+		created(){
+			Vue.http.interceptors.unshift((request, next) => {
+				this.loading = true;
+				next(() => this.loading = false);
+			});
+		},
 		data(){
 			return {
 				year: new Date().getFullYear(),
-				user: Auth.user
+				user: Auth.user,
+				loading: false
 			}
 		},
 		computed:{

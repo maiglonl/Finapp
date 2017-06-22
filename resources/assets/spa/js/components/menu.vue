@@ -9,12 +9,12 @@
 							<i class="material-icons">menu</i>
 						</a>
 						<ul class="right hide-on-med-and-down">
-							<li v-for="menu in config.menus">
+							<li v-for="menu in menus">
 								<a href="!#" v-if="menu.dropdownId" class="dropdownBtn" :data-activates="menu.dropdownId">
 									{{ menu.name }}
 									<i class="material-icons right">arrow_drop_down</i>
 								</a>
-								<a :href="menu.url" v-else class="dropdownBtn">{{ menu.name }}</a>
+								<router-link :to="{name: menu.routeName}" v-else class="dropdownBtn">{{ menu.name }}</router-link>
 							</li>
 							<li>
 								<a href="!#" class="dropdownBtn" data-activates="dropdownLogout">
@@ -27,18 +27,18 @@
 			</div>
 		</nav>
 		<ul id="navMobile" class="side-nav">
-			<li v-for="menu in config.menus">
-				{{ name }}<a :href="menu.url" class="dropdownBtn">{{ menu.name }}</a>
+			<li v-for="menu in menus">
+				{{ name }}<router-link :to="{name: menu.routeName}" class="dropdownBtn">{{ menu.name }}</router-link>
 			</li>
 		</ul>
-		<ul :id="dropMenu.id" class="dropdown-content" v-for="dropMenu in config.menusDropdown">
+		<ul :id="dropMenu.id" class="dropdown-content" v-for="dropMenu in menusDropdown">
 			<li v-for="submenu in dropMenu.items">
-				<a :href="submenu.url" class="dropdownBtn">{{ submenu.name }}</a>
+				<router-link :to="{name: submenu.routeName}" class="dropdownBtn">{{ submenu.name }}</router-link>
 			</li>
 		</ul>
 		<ul id="dropdownLogout" class="dropdown-content">
 			<li>
-				<router-link :to="{ name: 'logout' }">Logout</router-link>
+				<router-link :to="{name: 'logout' }">Logout</router-link>
 			</li>
 		</ul>
 	</div>
@@ -47,38 +47,22 @@
 <script type="text/javascript">
 	import Auth from '../services/auth';
 	export default {
-		props: {
-			config: {
-				type: Object,
-				default(){
-					return {
-						name: '',
-						menus: [
-							{ name: "Contas a pagar", dropdownId: 'billPayMenu'},
-							{ name: "Contas a receber", dropdownId: 'billReceiveMenu'},
-						],
-						menusDropdown: [
-							{
-								id: 'billPayMenu',
-								items: [
-									{ name: "Cadastrar Conta", routeName: 'auth.login' },
-									{ name: "Listar Contas", routeName: 'auth.login' },
-								]
-							},{
-								id: 'billReceiveMenu',
-								items: [
-									{ name: "Cadastrar Conta", routeName: 'auth.login' },
-									{ name: "Listar Contas", routeName: 'auth.login' },
-								]
-							},
-						]
-					}
-				}
-			}
-		},
 		data(){
 			return {
-				user: Auth.user
+				user: Auth.user,
+				menus: [
+					{ name: "Contas bancárias", routeName: 'bank-account.list'},
+					{ name: "Contas a receber", dropdownId: 'billReceiveMenu'},
+				],
+				menusDropdown: [
+					{
+						id: 'billReceiveMenu',
+						items: [
+							{ name: "Cadastrar Conta", routeName: 'auth.login' },
+							{ name: "Listar Contas", routeName: 'auth.login' },
+						]
+					},
+				]
 			}
 		},
 		computed: {

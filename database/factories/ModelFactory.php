@@ -30,3 +30,11 @@ $factory->state(\Finapp\Models\User::class, 'admin', function (Faker\Generator $
         'role' => \Finapp\Models\User::ROLE_ADMIN,
     ];
 });
+
+$factory->define(\Finapp\Models\BankAccount::class, function (Faker\Generator $faker) {
+    return [
+        'name' => $faker->city,
+        'agency' => rand(100, 600),
+        'account' => rand(10000, 60000).'-'.rand(0,9),
+    ];
+});

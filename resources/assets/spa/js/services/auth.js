@@ -36,18 +36,18 @@ export default {
 		return jwtToken.accessToken(email, password).then((response) => {
 			let afterLoginContext = afterLogin.bind(this);
 			afterLoginContext(response);
-			console.log(this.user);
 			return response
 		});
 	},
 	logout(){
-		let afterLogout = () => {
+		let afterLogout = (response) => {
 			this.clearAuth();
+			return response;
 		}
 
 		return jwtToken.revokeToken()
-		.then(afterLogout())
-		.catch(afterLogout());
+			.then(afterLogout)
+			.catch(afterLogout);
 	},
 	clearAuth(){
 		this.user.data = null;

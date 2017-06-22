@@ -1,7 +1,7 @@
 <template> 
 	<div class="container">
 		<div class="row">
-			<div class="col s6 offset-s3 z-depth-2">
+			<div class="card-panel col s6 offset-s3 z-depth-2">
 				<h3 class="center">Finapp</h3>
 				<div class="row" v-if="error.error">
 					<div class="col s12">

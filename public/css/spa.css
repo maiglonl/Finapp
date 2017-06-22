@@ -5245,7 +5245,7 @@ td, th {
   height: 100%;
 }
 
-.progress {
+.progress, .spinner {
   position: relative;
   height: 4px;
   display: block;
@@ -5256,7 +5256,7 @@ td, th {
   overflow: hidden;
 }
 
-.progress .determinate {
+.progress .determinate, .spinner .determinate {
   position: absolute;
   top: 0;
   left: 0;
@@ -5265,11 +5265,11 @@ td, th {
   transition: width .3s linear;
 }
 
-.progress .indeterminate {
+.progress .indeterminate, .spinner .indeterminate {
   background-color: #43A047;
 }
 
-.progress .indeterminate:before {
+.progress .indeterminate:before, .spinner .indeterminate:before {
   content: '';
   position: absolute;
   background-color: inherit;
@@ -5281,7 +5281,7 @@ td, th {
   animation: indeterminate 2.1s cubic-bezier(0.65, 0.815, 0.735, 0.395) infinite;
 }
 
-.progress .indeterminate:after {
+.progress .indeterminate:after, .spinner .indeterminate:after {
   content: '';
   position: absolute;
   background-color: inherit;
@@ -11058,6 +11058,20 @@ button.picker__today:focus, button.picker__clear:focus, button.picker__close:foc
   .picker--time .picker__box {
     margin-bottom: 5em;
   }
+}
+
+body {
+  background-color: #E8F5E9;
+}
+
+.spinner {
+  margin: 0;
+}
+
+.spiner-fixed {
+  width: 100%;
+  position: fixed;
+  z-index: 998;
 }
 
 /*# sourceMappingURL=spa.css.map */

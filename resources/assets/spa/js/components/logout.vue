@@ -1,8 +1,8 @@
 <template> 
 	<div class="container">
 		<div class="row">
-			<div class="col s6 offset-s3 z-depth-2">
-				<h4 class="center">Efetuando Logout...</h4>
+			<div class="col s8 offset-s2 z-depth-2 card-panel">
+				<h5 class="center">Efetuando Logout...</h5>
 				<div class="progress">
 					<div class="indeterminate"></div>
 				</div>
@@ -23,8 +23,8 @@
 			logout(){
 				let goToLogin = () => this.$router.push({ name: 'auth.login' });
 				Auth.logout()
-					.then(goToLogin())
-					.catch(goToLogin());
+					.then(goToLogin)
+					.catch(goToLogin);
 			}
 		}
 	};
