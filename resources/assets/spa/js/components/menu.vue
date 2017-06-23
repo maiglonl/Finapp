@@ -9,7 +9,7 @@
 							<i class="material-icons">menu</i>
 						</a>
 						<ul class="right hide-on-med-and-down">
-							<li v-for="menu in menus">
+							<li v-for="menu in menus" :class="menuItemClass(menu)">
 								<a href="!#" v-if="menu.dropdownId" class="dropdownBtn" :data-activates="menu.dropdownId">
 									{{ menu.name }}
 									<i class="material-icons right">arrow_drop_down</i>
@@ -32,7 +32,7 @@
 			</li>
 		</ul>
 		<ul :id="dropMenu.id" class="dropdown-content" v-for="dropMenu in menusDropdown">
-			<li v-for="submenu in dropMenu.items">
+			<li v-for="submenu in dropMenu.items" :class="menuItemClass(submenu)">
 				<router-link :to="{name: submenu.routeName}" class="dropdownBtn">{{ submenu.name }}</router-link>
 			</li>
 		</ul>
@@ -68,6 +68,27 @@
 		computed: {
 			name(){
 				return this.user.data ? this.user.data.name : 'User';
+			}
+		},
+		methods: {
+			menuItemClass(menu){
+				let menuClass = [];
+				if(menu.active){
+					menuClass = ['active'];
+				}
+				if(menu.dropdownId !== undefined){
+					let dropdown = this.menusDropdown.find((elemento)=>{
+						return elemento.id == menu.dropdownId;
+					});
+					if(dropdown){
+						dropdown.items.forEach((val, key) => {
+							if(val.active){
+								menuClass = ['active'];
+							}
+						});
+					}
+				}
+				return menuClass;
 			}
 		},
 		mounted(){

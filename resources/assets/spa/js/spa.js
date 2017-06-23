@@ -13,6 +13,8 @@ require('./services/interceptors');
 var router = require('./router').default;
 Vue.component('app', require('./components/app.vue'));
 
+window.EventHub = new Vue();
+
 const app = new Vue({
 	el: '#spaApp',
 	router

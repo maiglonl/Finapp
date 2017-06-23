@@ -11,17 +11,32 @@
 // Materialize
 @import "node_modules/materialize-css/sass/materialize";
 
-body{
+// Default SCSS
+@import "../../_default/sass/_default";
+
+body {
 	background-color: color('green', 'lighten-5');
 }
 
-.spinner{
+.spinner {
 	@extend .progress;
 	margin: 0;
 }
 
-.spiner-fixed{
+.spiner-fixed {
 	width: 100%;
 	position: fixed;
 	z-index: 998;
+}
+
+.filter-group {
+	.btn {
+		float: right;
+		height: 3rem;
+		line-height: 3rem;
+	}
+	.filter-wrapper {
+		overflow: hidden;
+		padding-right: 10px;
+	}
 }

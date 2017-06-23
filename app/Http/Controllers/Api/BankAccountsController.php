@@ -7,6 +7,8 @@ use Finapp\Http\Controllers\Response;
 use Finapp\Http\Requests\BankAccountCreateRequest;
 use Finapp\Http\Requests\BankAccountUpdateRequest;
 use Finapp\Repositories\BankAccountRepository;
+use Finapp\Criteria\FindByNameCriteria;
+use Finapp\Criteria\FindByAgencyCriteria;
 
 
 class BankAccountsController extends Controller{
@@ -27,7 +29,9 @@ class BankAccountsController extends Controller{
 	 * @return \Illuminate\Http\Response
 	 */
 	public function index(){
-		$bankAccounts = $this->repository->all();
+		//$this->repository->pushCriteria(new FindByNameCriteria('a'))
+		//	->pushCriteria(new FindByAgencyCriteria('0'));
+		$bankAccounts = $this->repository->paginate();
 		return $bankAccounts;
 	}
 

@@ -6,6 +6,8 @@ use Finapp\Events\BankStoredEvent;
 use Prettus\Repository\Eloquent\BaseRepository;
 use Prettus\Repository\Criteria\RequestCriteria;
 use Finapp\Models\Bank;
+use Finapp\Repositories\BankRepositoryEloquent;
+use Finapp\Presenters\BankPresenter;
 
 /**
  * Class BankRepositoryEloquent
@@ -21,10 +23,14 @@ class BankRepositoryEloquent extends BaseRepository implements BankRepository{
 	public function create(array $attributes){
 		$logo = $attributes["logo"];
 		$attributes["logo"] = env('BANK_LOGO_DEFAULT');
+		$skipPresenter = $this->skipPresenter;
+		$this->skipPresenter(true);
 		$model = parent::create($attributes);
-		event(new BankStoredEvent($model, $logo));
+		$event = new BankStoredEvent($model, $logo);
+		event($event);
+		$this->skipPresenter = $skipPresenter;
 
-		return $model;
+		return $this->parserResult($model);
 	}
 
 	/**
@@ -38,10 +44,14 @@ class BankRepositoryEloquent extends BaseRepository implements BankRepository{
 			$logo = $attributes["logo"];
 			unset($attributes["logo"]);
 		}
+
+		$skipPresenter = $this->skipPresenter;
+		$this->skipPresenter(true);
 		$model = parent::update($attributes, $id);
 		event(new BankStoredEvent($model, $logo));
+		$this->skipPresenter = $skipPresenter;
 
-		return $model;
+		return $this->parserResult($model);
 	}
 
 	/**
@@ -58,5 +68,9 @@ class BankRepositoryEloquent extends BaseRepository implements BankRepository{
 	 */
 	public function boot(){
 		$this->pushCriteria(app(RequestCriteria::class));
+	}
+
+	public function presenter(){
+		return BankPresenter::class;
 	}
 }

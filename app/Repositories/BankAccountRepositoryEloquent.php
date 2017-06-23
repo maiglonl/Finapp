@@ -15,6 +15,12 @@ use Finapp\Models\BankAccount;
 class BankAccountRepositoryEloquent extends BaseRepository implements BankAccountRepository{
 
 	protected $skipPresenter = false;
+	protected $fieldSearchable = [
+		'name' => 'like', 
+		'agency' => 'like', 
+		'account' => 'like', 
+		'bank.name' => 'like'
+	];
 
 	/**
 	 * Specify Model class name
