@@ -74,6 +74,7 @@
 	import PaginationComponent from '../pagination.vue';
 	import PageTitleComponent from '../pageTitle.vue';
 	import SearchComponent from '../search.vue';
+
 	export default {
 		components: {
 			'modal': ModalComponent,
