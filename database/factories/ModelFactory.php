@@ -13,28 +13,34 @@
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 $factory->define(\Finapp\Models\User::class, function (Faker\Generator $faker) {
-    static $password;
+	static $password;
 
-    return [
-        'name' => $faker->name,
-        'email' => $faker->unique()->safeEmail,
-        'password' => $password ?: $password = bcrypt('secret'),
-        'remember_token' => str_random(10),
-    ];
+	return [
+		'name' => $faker->name,
+		'email' => $faker->unique()->safeEmail,
+		'password' => $password ?: $password = bcrypt('secret'),
+		'remember_token' => str_random(10),
+	];
 });
 
 $factory->state(\Finapp\Models\User::class, 'admin', function (Faker\Generator $faker) {
-    static $password;
+	static $password;
 
-    return [
-        'role' => \Finapp\Models\User::ROLE_ADMIN,
-    ];
+	return [
+		'role' => \Finapp\Models\User::ROLE_ADMIN,
+	];
 });
 
 $factory->define(\Finapp\Models\BankAccount::class, function (Faker\Generator $faker) {
-    return [
-        'name' => $faker->city,
-        'agency' => rand(100, 600),
-        'account' => rand(10000, 60000).'-'.rand(0,9),
-    ];
+	return [
+		'name' => $faker->city,
+		'agency' => rand(100, 600),
+		'account' => rand(10000, 60000).'-'.rand(0,9),
+	];
+});
+
+$factory->define(\Finapp\Models\Client::class, function (Faker\Generator $faker) {
+	return [
+		'name' => $faker->name
+	];
 });

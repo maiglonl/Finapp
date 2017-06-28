@@ -2,16 +2,17 @@
 
 use Illuminate\Database\Seeder;
 
-class UsersTableSeeder extends Seeder
-{
+class UsersTableSeeder extends Seeder{
     
 	/**
 	 * Run the database seeds.
 	 *
 	 * @return void
 	 */
-	public function run()
-	{
+	public function run(){
+		$repository = app(\Finapp\Repositories\ClientRepository::class);
+		$clients = $repository->all();
+
 		factory(\Finapp\Models\User::class, 1)
 			->states('admin')
 			->create([
@@ -19,11 +20,17 @@ class UsersTableSeeder extends Seeder
 				'email' => 'admin@user.com'
 			]
 		);
-
-		factory(\Finapp\Models\User::class, 1)
-			->create([
-				'email' => 'client@user.com'
-			]
-		);
+		foreach(range(1,50) as $value){
+			factory(\Finapp\Models\User::class, 1)
+				->create([
+					'name' => "Cliente $value",
+					'email' => "client$value@user.com"
+				]
+			)->each(function($user) use($clients){
+				$client = $clients->random();
+				$user->client()->associate($client);
+				$user->save();
+			});
+		}
 	}
 }

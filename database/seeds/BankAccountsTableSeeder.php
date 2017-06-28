@@ -3,6 +3,7 @@
 use Illuminate\Database\Seeder;
 use Finapp\Models\BankAccount;
 use Finapp\Repositories\BankRepository;
+use Finapp\Repositories\ClientRepository;
 
 class BankAccountsTableSeeder extends Seeder{
 	/**
@@ -11,18 +12,20 @@ class BankAccountsTableSeeder extends Seeder{
 	 * @return void
 	 */
 	public function run(){
-		/** @var BankRepository $repository */
-		$repository = app(BankRepository::class);
-		$repository->skipPresenter(true);
-		$banks = $repository->all();
-		$max = 15;
+		
+		$banks = $this->getBanks();
+		$clients = $this->getClients();
+		$max = 50;
 		$idDefault = rand(1, $max);
 
 		factory(BankAccount::class, $max)
 			->make()
-			->each( function($bankAccount) use($banks, $idDefault){
+			->each( function($bankAccount) use($banks, $idDefault, $clients){
 				$bank = $banks->random();
+				$client = $clients->random();
+
 				$bankAccount->bank_id = $bank->id;
+				$bankAccount->client_id = $client->id;
 				$bankAccount->save();
 
 				if( $idDefault == $bankAccount->id){
@@ -30,5 +33,19 @@ class BankAccountsTableSeeder extends Seeder{
 					$bankAccount->save();
 				}
 			});
+	}
+
+	private function getBanks(){
+		/** @var BankRepository $bankRepository */
+		$bankRepository = app(BankRepository::class);
+		$bankRepository->skipPresenter(true);
+		return $bankRepository->all();
+	}
+
+	private function getClients(){
+		/** @var ClientRepository $clientRepository */
+		$clientRepository = app(ClientRepository::class);
+		$clientRepository->skipPresenter(true);
+		return $clientRepository->all();
 	}
 }

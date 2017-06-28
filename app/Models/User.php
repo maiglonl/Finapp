@@ -28,6 +28,10 @@ class User extends Authenticatable implements JWTSubject
 		'password', 'remember_token',
 	];
 
+	public function client(){
+		return $this->belongsTo(Client::class);
+	}
+
 	public function getJWTIdentifier(){
 		return $this->id;
 	}
