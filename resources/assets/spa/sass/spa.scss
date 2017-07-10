@@ -13,6 +13,7 @@
 
 // Default SCSS
 @import "../../_default/sass/_default";
+@import "../../_default/sass/select2-materialize";
 
 body {
 	background-color: color('green', 'lighten-5');
@@ -38,5 +39,27 @@ body {
 	.filter-wrapper {
 		overflow: hidden;
 		padding-right: 10px;
+	}
+}
+
+.category-tree{
+	@extend .collection;
+	border: none;
+	margin: 0;
+	overflow: visible;
+
+	.category-child{
+		@extend .collection-item;
+		padding-left: 50px;
+	}
+
+	.category-symbol{
+		line-height: 35px;
+		height: 35px;
+
+		i{
+			line-height: inherit;
+			height: inherit;
+		}
 	}
 }

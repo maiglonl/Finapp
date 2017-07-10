@@ -44,3 +44,9 @@ $factory->define(\Finapp\Models\Client::class, function (Faker\Generator $faker)
 		'name' => $faker->name
 	];
 });
+
+$factory->define(\Finapp\Models\Category::class, function (Faker\Generator $faker) {
+	return [
+		'name' => $faker->name
+	];
+});

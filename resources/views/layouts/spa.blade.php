@@ -9,6 +9,7 @@
 
 	<!-- Styles -->
 	<link href="{{ asset('css/spa.css') }}" rel="stylesheet">
+
 </head>
 <body>
 	<div id="spaApp">

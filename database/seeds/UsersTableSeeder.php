@@ -20,7 +20,7 @@ class UsersTableSeeder extends Seeder{
 				'email' => 'admin@user.com'
 			]
 		);
-		foreach(range(1,50) as $value){
+		foreach(range(1,5) as $value){
 			factory(\Finapp\Models\User::class, 1)
 				->create([
 					'name' => "Cliente $value",

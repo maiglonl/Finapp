@@ -27,8 +27,9 @@
 			</div>
 		</nav>
 		<ul id="navMobile" class="side-nav">
+			<li>{{ name }}</li>
 			<li v-for="menu in menus">
-				{{ name }}<router-link :to="{name: menu.routeName}" class="dropdownBtn">{{ menu.name }}</router-link>
+				<router-link :to="{name: menu.routeName}" class="dropdownBtn">{{ menu.name }}</router-link>
 			</li>
 		</ul>
 		<ul :id="dropMenu.id" class="dropdown-content" v-for="dropMenu in menusDropdown">
@@ -51,7 +52,8 @@
 			return {
 				user: Auth.user,
 				menus: [
-					{ name: "Contas bancárias", routeName: 'bank-account.list'},
+					{ name: "Conta bancária", routeName: 'bank-account.list'},
+					{ name: "Categoria", routeName: 'category.list'},
 					{ name: "Contas a receber", dropdownId: 'billReceiveMenu'},
 				],
 				menusDropdown: [
@@ -93,7 +95,9 @@
 		},
 		mounted(){
 			$("#navMobileBtn").sideNav();
-			$(".dropdownBtn").dropdown();
+			$(".dropdownBtn").dropdown({
+				belowOrigin: true
+			});
 			//$('.modal').modal();
 		}
 	};
