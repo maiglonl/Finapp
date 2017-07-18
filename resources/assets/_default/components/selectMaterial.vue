@@ -18,31 +18,39 @@
 		data(){
 			return{
 				optionsData: [],
+				selectedData: 0
 			}
 		},
-		ready(){
+		mounted(){
 			this.optionsData = this.options;
+			this.selectedData = this.selected !== null ? this.selected : 0;
 			let self = this;
 			$(this.$el)
 				.select2(this.optionsData)
 				.on('change', function(){
-					if(parseInt(this.value, 10) !== 0){
-						EventHub.$emit('selectedValue', self.selected);
+					if(self.selectedData != $(this.$el).val()){
+						console.log("changed 1");
+						self.selectedData = this.value;
 					}
 				});
-			let newVal = this.selected !== null ? this.selected : 0;
-			$(this.$el).val(newVal).trigger('change');
+			$(this.$el).val(this.selectedData).trigger('change');
 		},
 		watch: {
 			'options.data'(data){
 				this.optionsData.data = data;
-				$(this.$el).select2(Object.assign({}, this.options, {data: data}));
+				$(this.$el).empty();
+				$(this.$el).select2(this.optionsData);
 			},
 			'selected'(newId){
 				if(newId != $(this.$el).val()){
-					let newVal = newId !== null ? newId : 0;
-					$(this.$el).val(newVal).trigger('change');
+					console.log("changed 3");
+					this.selectedData = this.selected !== null ? this.selected : 0;
+					$(this.$el).val(this.selectedData).trigger('change');
 				}
+			},
+			'selectedData'(newId){
+				console.log("changed 2["+newId+", "+$(this.$el).val()+"]");
+				EventHub.$emit('selectedValue', newId);
 			}
 		}
 	}

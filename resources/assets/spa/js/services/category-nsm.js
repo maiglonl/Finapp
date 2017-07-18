@@ -67,7 +67,8 @@ export class CategoryService{
 				 * está sem pai e antes tinha pai
 				 */
 				if(parent){
-					parent.children.data.$remove(categoryOriginal);
+					let index = parent.children.data.indexOf(categoryOriginal);
+					parent.children.data.splice(index, 1);
 					categories.push(categoryUpdated);
 					return response;
 				}
@@ -80,7 +81,8 @@ export class CategoryService{
 					 * Trocar categoria de pai
 					 */
 					if(parent.id != categoryUpdated.parent_id){
-						parent.children.data.$remove(categoryOriginal);
+						let index = parent.children.data.indexOf(categoryOriginal);
+						parent.children.data.splice(index, 1);
 						self._addChild(categoryUpdated, categories);
 						return response;
 					}
@@ -88,7 +90,8 @@ export class CategoryService{
 					/*
 					 * Tornar a categoria um filho
 					 */
-					categories.$remove(categoryOriginal);
+					let index = categories.indexOf(categoryOriginal);
+					categories.splice(index, 1);
 					self._addChild(categoryUpdated, categories);
 					return response;
 				}
@@ -101,12 +104,12 @@ export class CategoryService{
 				let index = parent.children.data.findIndex(element => {
 					return element.id == categoryUpdated.id;
 				});
-				parent.children.data.$set(index, categoryUpdated);
+				Vue.set(parent.children.data, index, categoryUpdated);
 			}else{
 				let index = categories.findIndex(element => {
 					return element.id == categoryUpdated.id;
 				});
-				categories.$set(index, categoryUpdated);
+				Vue.set(categories, index, categoryUpdated);
 			}
 			return response; 
 		});
@@ -118,11 +121,17 @@ export class CategoryService{
 	}
 
 	static _findParent(id, categories){
+		let result = null;
 		for(let category of categories){
 			if(id == category.id){
-				return category;
+				result = category;
+				break;
 			}
-			return this._findParent(id, category.children.data);
+			result = this._findParent(id, category.children.data);
+			if(result !== null){
+				break;
+			}
 		}
+		return result;
 	}
 }

@@ -15,7 +15,7 @@
 				<span slot="title">{{ title }}</span>
 				<div slot="footer">
 					<button class="btn btn-flat waves-effect green lighten-2 modal-action modal-close" type="submit">OK</button>
-					<button class="btn btn-flat waves-effect waves-red modal-action modal-close" type="cancel">Cancelar</button>
+					<button class="btn btn-flat waves-effect waves-red modal-action modal-close" type="button">Cancelar</button>
 				</div>
 			</category-register>
 			<div class="fixed-action-btn">
