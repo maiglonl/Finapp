@@ -115,6 +115,19 @@ export class CategoryService{
 		});
 	}
 
+	static destroy (category, parent, categories){
+		return Category.delete({id: category.id}).then(response => {
+			if(parent){
+				let index = parent.children.data.indexOf(category);
+				parent.children.data.splice(index, 1);
+			}else{
+				let index = categories.indexOf(category);
+				categories.splice(index, 1);
+			}
+			return response;
+		});
+	}
+
 	static _addChild(child, categories){
 		let parent = this._findParent(child.parent_id, categories);
 		parent.children.data.push(child);   

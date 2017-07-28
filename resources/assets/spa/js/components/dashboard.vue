@@ -4,10 +4,7 @@
 			<div class="col-md-8 col-md-offset-2">
 				<div class="panel panel-default">
 					<div class="panel-heading">Example Component</div>
-
-					<div class="panel-body">
-						I'm an example component! 
-					</div>
+					<div class="panel-body"></div>
 				</div>
 			</div>
 		</div>
@@ -15,13 +12,10 @@
 </template>
 
 <script>
-	import Auth from '../services/auth';
-	import {User} from '../services/resources';
+	import store from '../store/store';
 	export default {
-		mounted() {
-			User.get().then((response) => {
-			});
-			//console.log(Auth.user());
+		computed: {
+			
 		}
 	}
 </script>

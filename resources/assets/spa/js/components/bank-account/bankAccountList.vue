@@ -74,6 +74,8 @@
 	import PaginationComponent from '../pagination.vue';
 	import PageTitleComponent from '../pageTitle.vue';
 	import SearchComponent from '../search.vue';
+	import store from '../../store/store';
+	import SearchOptions from '../../services/search-options';
 
 	export default {
 		components: {
@@ -84,11 +86,11 @@
 		},
 		data() {
 			return {
-				bankAccounts: [],
 				bankAccountToDelete: null,
 				modal: {
 					id: 'modal-delete'
 				},
+				searchOptions: new SearchOptions(),
 				pagination: {
 					current_page: 1,
 					per_page: 0,
@@ -99,7 +101,6 @@
 					key: 'id',
 					sort: 'asc'
 				},
-				current_page: 1,
 				table: {
 					headers: {
 						id: { label: '#', width: '10%' },
@@ -112,8 +113,12 @@
 				}
 			}
 		},
+		computed:{
+			bankAccounts(){ return store.state.bankAccount.bankAccounts; }
+		},
 		mounted() {
 			this.getBankAccounts();
+			console.log(this);
 		},
 		methods: {
 			destroy() {
@@ -123,8 +128,8 @@
 						return self.bankAccountToDelete.id != bankAccount.id;
 					});
 					this.bankAccountToDelete = null;
-					if(this.bankAccounts.length === 0 && this.current_page > 1){
-						this.current_page--;
+					if(this.bankAccounts.length === 0 && this.pagination.current_page > 1){
+						this.pagination.current_page--;
 						this.getBankAccounts();
 					}
 					Materialize.toast('Conta bancária excluída com sucesso!', 2000);					
@@ -135,20 +140,15 @@
 				$('#modal-delete').modal('open');
 			},
 			getBankAccounts(){
-				BankAccount.query({
-					page: this.current_page,
-					orderBy: this.order.key,
-					sortedBy: this.order.sort,
-					search: this.search,
-					include: 'bank'
-				}).then((response) => {
-					this.bankAccounts = response.data.data;
-					this.pagination = response.data.meta.pagination;
+				store.dispatch('query', {
+					pagination: this.pagination,
+					order: this.order,
+					search: this.search
 				});
 			},
 			changePage(page){
-				if(page != this.current_page){
-					this.current_page = page;
+				if(page != this.pagination.current_page){
+					this.pagination.current_page = page;
 					this.getBankAccounts();
 				}
 			},
@@ -158,7 +158,7 @@
 				this.getBankAccounts();
 			},
 			filter(model){
-				this.current_page = 1;
+				this.pagination.current_page = 1;
 				this.search = model;
 				this.getBankAccounts();
 			}

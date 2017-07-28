@@ -1,11 +1,11 @@
 import VueRouter from 'vue-router';
-import Auth from './services/auth';
+import store from './store/store';
 
 Vue.use(VueRouter);
 let routes = require('./routes').default;
 let router = new VueRouter({ routes });
 router.beforeEach((to, from, next)=>{
-	if(to.meta.auth && !Auth.user.check){
+	if(to.meta.auth && !store.state.auth.check){
 		return router.push({name: "auth.login"});
 	}
 	next();

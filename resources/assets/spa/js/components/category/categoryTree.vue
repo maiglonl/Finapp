@@ -2,14 +2,14 @@
 	<ul class="category-tree">
 		<li v-for="(o, index) in categories" class="category-child">
 			<div class="valign-wrapper">
-				<a :data-activates="dropdownId(o)" class="category-symbol" href="#"
+				<a :data-activates="dropdownId(o)" class="category-symbol" href="#" @click.prevent=""
 					:class="{'green-text' : o.children.data.length > 0, 'grey-text' : !o.children.data.length }">
 					<i class="material-icons">{{ categoryIcon(o) }}</i>
 				</a>
 				<ul :id="dropdownId(o)" class="dropdown-content">
 					<li><a href="#" @click.prevent="categoryNew(o)">Adicionar</a></li>
 					<li><a href="#" @click.prevent="categoryEdit(o)">Editar</a></li>
-					<li><a href="#">Remover</a></li>
+					<li><a href="#" @click.prevent="categoryDelete(o)">Remover</a></li>
 				</ul>
 				<span class="valign" v-html="categoryText(o)"></span>
 			</div>
@@ -60,6 +60,9 @@
 			},
 			categoryEdit(category){
 				EventHub.$emit('categoryEdit', category, this.parent);
+			},
+			categoryDelete(category){
+				EventHub.$emit('categoryDelete', category, this.parent);
 			},
 		},
 		watch: {
