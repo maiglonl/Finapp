@@ -1,10 +1,10 @@
 <template src="./_form.html"></template>
 
 <script type="text/javascript">
-	import {BankAccount, Bank} from '../../services/resources';
+	import {BankAccount} from '../../services/resources';
 	import PageTitle from '../pageTitle.vue';
+	import store from '../../store/store';
 	import 'materialize-autocomplete';
-	import _ from 'lodash';	
 
 	export default {
 		components: {
@@ -17,28 +17,30 @@
 					agency: '',
 					account: '',
 					bank_id: '',
+					bank: '',
 					'default': false
 				},
 				bank: {
 					name: ""
 				},
-				banks: [],
 				title: "Nova conta bancária"
 			}
+		},
+		computed: {
+			banks(){ return store.state.bank.banks; }
 		},
 		created(){
 			this.getBanks();
 		},
 		methods: {
 			submit(){
-				BankAccount.save({}, this.bankAccount).then(() => {
+				store.dispatch('bankAccount/save', this.bankAccount).then((response) => {
 					Materialize.toast('Conta bancária criada com sucesso!', 2000);
 					this.$router.replace({name: 'bank-account.list'});
-				})
+				});
 			},
 			getBanks(){
-				Bank.query().then((response) => {
-					this.banks = response.data.data;
+				store.dispatch('bank/query').then((response) => {
 					this.initAutocomplete();
 				});
 			},
@@ -54,23 +56,16 @@
 							el: '#bank-id-dropdown'
 						},
 						getData(value, callback){
-							let banks = self.filterBankByName(value);
-							banks = banks.map((o) => {
-								return {id: o.id, text: o.name}
-							});
+							let mapBanks = store.getters['bank/mapBanks'];
+							let banks = mapBanks(value);
 							callback(value, banks);
 						},
 						onSelect(item){
 							self.bankAccount.bank_id = item.id;
+							self.bank = {id: item.id, name: item.text};
 						}
 					});
 				});
-			},
-			filterBankByName(name){
-				let banks = _.filter(this.banks, (o) => {
-					return _.include(o.name.toLowerCase(), name.toLowerCase());
-				});
-				return banks
 			}
 		}
 	}

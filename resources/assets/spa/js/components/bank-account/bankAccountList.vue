@@ -12,8 +12,8 @@
 							<th v-for="(o, key) in table.headers" :width="o.width"  @click.prevent="sortBy(key)">
 								<a href="#">
 									{{o.label}}
-									<i class="material-icons right" v-if="order.key==key">
-										{{ order.sort == 'asc' ? 'arrow_drop_up' : 'arrow_drop_down' }}
+									<i class="material-icons right" v-if="searchOptions.order.key == key">
+										{{ searchOptions.order.sort == 'asc' ? 'arrow_drop_up' : 'arrow_drop_down' }}
 									</i>
 								</a>
 							</th>
@@ -38,9 +38,9 @@
 					</tbody>
 				</table>
 				<pagination 
-					:per-page="pagination.per_page" 
-					:total-records="pagination.total"
-					:current_page="pagination.current_page">
+					:per-page="searchOptions.pagination.per_page" 
+					:total-records="searchOptions.pagination.total"
+					:current-page="searchOptions.pagination.current_page">
 				</pagination>
 			</div>
 			<div class="fixed-action-btn">
@@ -49,14 +49,14 @@
 				</router-link>
 			</div>
 
-			<modal :modal="modal" v-if="bankAccountToDelete">
+			<modal :modal="modal" v-if="bankAccountDelete">
 				<div slot="content">
 					<h4>Mensagem de confirmação</h4>
 					<p>Deseja excluir a conta?</p>
 					<div class="divider"></div>
-					<p>Nome: <strong>{{ bankAccountToDelete.name }}</strong></p>
-					<p>Agência: <strong>{{ bankAccountToDelete.agency }}</strong></p>
-					<p>C/C: <strong>{{ bankAccountToDelete.account }}</strong></p>
+					<p>Nome: <strong>{{ bankAccountDelete.name }}</strong></p>
+					<p>Agência: <strong>{{ bankAccountDelete.agency }}</strong></p>
+					<p>C/C: <strong>{{ bankAccountDelete.account }}</strong></p>
 					<div class="divider"></div>
 				</div>
 				<div slot="footer">
@@ -75,7 +75,6 @@
 	import PageTitleComponent from '../pageTitle.vue';
 	import SearchComponent from '../search.vue';
 	import store from '../../store/store';
-	import SearchOptions from '../../services/search-options';
 
 	export default {
 		components: {
@@ -86,81 +85,50 @@
 		},
 		data() {
 			return {
-				bankAccountToDelete: null,
 				modal: {
 					id: 'modal-delete'
 				},
-				searchOptions: new SearchOptions(),
-				pagination: {
-					current_page: 1,
-					per_page: 0,
-					total: 0	
-				},
-				search: "",
-				order: {
-					key: 'id',
-					sort: 'asc'
-				},
 				table: {
 					headers: {
-						id: { label: '#', width: '10%' },
-						name: { label: 'Nome',  width: '30%' },
-						agency: { label: 'Agência',  width: '10%' },
-						account: { label: 'Conta',  width: '10%' },
+						id: { label: '#', width: '12%' },
+						name: { label: 'Nome',  width: '22%' },
+						agency: { label: 'Agência',  width: '12%' },
+						account: { label: 'Conta',  width: '12%' },
 						'banks:bank_id|banks.name': {label: 'Banco', width: '15%' },
-						'default': { label: 'Padrão',  width: '10%' },
+						'default': { label: 'Padrão',  width: '12%' },
 					}
 				}
 			}
 		},
 		computed:{
-			bankAccounts(){ return store.state.bankAccount.bankAccounts; }
+			bankAccounts(){ return store.state.bankAccount.bankAccounts; },
+			searchOptions(){ return store.state.bankAccount.searchOptions; },
+			bankAccountDelete(){ return store.state.bankAccount.bankAccountDelete; }
 		},
 		mounted() {
-			this.getBankAccounts();
-			console.log(this);
+			store.dispatch('bankAccount/query');
 		},
 		methods: {
 			destroy() {
-				BankAccount.delete({id: this.bankAccountToDelete.id}).then((response) => {
-					let self = this;
-					this.bankAccounts = this.bankAccounts.filter(function (bankAccount) {
-						return self.bankAccountToDelete.id != bankAccount.id;
-					});
-					this.bankAccountToDelete = null;
-					if(this.bankAccounts.length === 0 && this.pagination.current_page > 1){
-						this.pagination.current_page--;
-						this.getBankAccounts();
-					}
-					Materialize.toast('Conta bancária excluída com sucesso!', 2000);					
+				store.dispatch('bankAccount/delete').then((response) => {
+					Materialize.toast('Conta bancária excluída com sucesso!', 2000);
 				});
 			},
 			openModalDelete(bankAccount){
-				this.bankAccountToDelete = bankAccount;
+				console.log(1);
+				store.commit('bankAccount/setDelete', bankAccount);
+				console.log(this.bankAccountDelete);
 				$('#modal-delete').modal('open');
-			},
-			getBankAccounts(){
-				store.dispatch('query', {
-					pagination: this.pagination,
-					order: this.order,
-					search: this.search
-				});
+				console.log(3);
 			},
 			changePage(page){
-				if(page != this.pagination.current_page){
-					this.pagination.current_page = page;
-					this.getBankAccounts();
-				}
+				store.dispatch('bankAccount/queryWithPagination', page);
 			},
 			sortBy(key){
-				this.order.key = key;
-				this.order.sort = this.order.sort == 'asc' ? 'desc' : 'asc';
-				this.getBankAccounts();
+				store.dispatch('bankAccount/queryWithSortBy', key);
 			},
-			filter(model){
-				this.pagination.current_page = 1;
-				this.search = model;
-				this.getBankAccounts();
+			filter(filter){
+				store.dispatch('bankAccount/queryWithFilter', filter);
 			}
 		},
 		created: function () {

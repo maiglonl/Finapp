@@ -1,11 +1,13 @@
 <template>
-	<form name="searchForm" method="GET" @submit.prevent="submit()">
+	<form name="searchForm" method="GET" @submit.prevent="">
 		<div class="filter-group">
-			<button class="btn waves-effect" type="submit">
-				<i class="material-icons">search</i>
-			</button>
 			<div class="filter-wrapper">
-				<input type="text" v-model="search" placeholder="Digite aqui a sua busca">
+				<div class="row">
+					<div class="input-field col s12">
+						<i class="material-icons prefix">search</i>
+						<input type="text" v-model="search" placeholder="Digite aqui a sua busca">
+					</div>
+				</div>
 			</div>
 		</div>
 	</form>
@@ -18,9 +20,9 @@
 				search: ""
 			}
 		},
-		methods: {
-			submit(){
-				EventHub.$emit('searchSubmit', this.search);
+		watch: {
+			search(newValue){
+				EventHub.$emit('searchSubmit', newValue);
 			}
 		}
 	}

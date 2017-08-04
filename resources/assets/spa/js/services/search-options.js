@@ -1,23 +1,16 @@
 export default class{
-	constructor(){
+	constructor(include = null){
 		this._pagination = {
 			current_page: 1,
 			per_page: 0,
 			total: 0
 		};
-		this.search = '',
+		this.search = '';
 		this.order = {
-			get key(){
-				return this._key;
-			},
-			set key(value){
-				this._key = value;
-				this.sort = this.sort == 'asc' ? 'desc' : 'asc';
-			},
-			_key: 'id',
+			key: 'id',
 			sort: 'asc'
-		},
-		this.include = null
+		};
+		this.include = include;
 	}
 
 	get pagination(){
@@ -30,7 +23,7 @@ export default class{
 	createOptions(){
 		let options = {
 			page: this.pagination.current_page,
-			orederBy: this.order.key,
+			orderBy: this.order.key,
 			sortedBy: this.order.sort,
 			search: this.search
 		};
