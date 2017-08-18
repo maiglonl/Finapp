@@ -53,7 +53,7 @@
 			return {
 				menus: [
 					{ name: "Conta bancária", routeName: 'bank-account.list'},
-					{ name: "Categoria", routeName: 'category.list'},
+					{ name: "Plano de Contas", routeName: 'plan-account'},
 					{ name: "Contas a receber", dropdownId: 'billReceiveMenu'},
 				],
 				menusDropdown: [

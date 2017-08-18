@@ -6,10 +6,10 @@ use Prettus\Repository\Contracts\RepositoryCriteriaInterface;
 use Prettus\Repository\Contracts\RepositoryInterface;
 
 /**
- * Interface CategoryRepository
+ * Interface CategoryExpenseRepository
  * @package namespace Finapp\Repositories;
  */
-interface CategoryRepository extends RepositoryInterface, RepositoryCriteriaInterface
+interface CategoryExpenseRepository extends RepositoryInterface, RepositoryCriteriaInterface
 {
     //
 }

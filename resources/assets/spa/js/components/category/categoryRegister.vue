@@ -7,12 +7,12 @@
 					<div class="row">
 						<div class="input-field col s12">
 							<label>Nome</label>
-							<input type="text" v-model="categoryReg.name">
+							<input type="text" class="active" placeholder="Nome da categoria" v-model="categReg.name">
 						</div>
 					</div>
 					<div class="row">
 						<div class="input-field col s12">
-							<select-material :options="cpOptions" :selected="categoryReg.parent_id"></select-material>
+							<select-material :options="cpOptions" :selected="categReg.parent_id" :parent="this._uid"></select-material>
 							<label class="active">Categoria Pai</label>
 						</div>
 					</div>
@@ -37,11 +37,12 @@
 		props: {
 			categoryRegister: { type: Object, required: true },
 			modalOptions: { type: Object, required: true },
-			cpOptions: { type: Object, required: true }
+			cpOptions: { type: Object, required: true },
+			namespace: { tpe: String, required: true }
 		},
 		data(){
 			return {
-				categoryReg: {
+				categReg: {
 					id: 0,
 					name: '',
 					parent_id: 0
@@ -49,22 +50,24 @@
 			}
 		},
 		created(){
-			this.categoryReg = this.categoryRegister;
-			EventHub.$on('selectedValue', this.changeParentId);
+			this.categReg = Object.assign({}, this.categoryRegister);
+			EventHub.$on(`selectedValue_${this._uid}`, this.changeParentId);
 		},
 		methods: {
 			submit(){
-				EventHub.$emit('saveCategory', this.categoryReg);
+				if(this.categReg.parent_id == 0){
+					this.categReg.parent_id = null
+				}
+				EventHub.$emit(`${this.namespace}Save`, this.categReg);
 			},
 			changeParentId(newId){
-				console.log("categRegChanged to: "+newId);
 				let newVal = newId !== 0 ? newId : null;
-				this.categoryReg.parent_id = newId;
+				this.categReg.parent_id = newId;
 			}
 		},
 		watch: {
 			'categoryRegister'(data){
-				this.categoryReg = data;
+				this.categReg = Object.assign({}, data);
 			}
 		}
 	}

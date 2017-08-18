@@ -3,23 +3,10 @@
 namespace Finapp\Http\Controllers\Api;
 
 
-use Finapp\Http\Controllers\Controller;
 use Finapp\Http\Requests\CategoryRequest;
-use Finapp\Repositories\CategoryRepository;
 use Finapp\Criteria\FindRootCategoriesCriteria;
-use Finapp\Criteria\WithDepthCategoriesCriteria;
 
-class CategoriesController extends Controller{
-	/**
-	 * @var CategoryRepository
-	 */
-	protected $repository;
-
-	public function __construct(CategoryRepository $repository){
-		$this->repository = $repository;
-		$this->repository->pushCriteria(new WithDepthCategoriesCriteria());
-	}
-
+trait CategoriesControllerTrait {
 
 	/**
 	 * Display a listing of the resource.

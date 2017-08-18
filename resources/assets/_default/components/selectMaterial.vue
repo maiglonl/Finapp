@@ -13,6 +13,11 @@
 				validator(value){
 					return typeof value == 'string' || typeof value == 'number' || value === null;
 				} 
+			},
+			parent:{
+				type: Number,
+				required: false,
+				default(){ return null; }
 			}
 		},
 		data(){
@@ -29,7 +34,6 @@
 				.select2(this.optionsData)
 				.on('change', function(){
 					if(self.selectedData != $(this.$el).val()){
-						console.log("changed 1");
 						self.selectedData = this.value;
 					}
 				});
@@ -43,14 +47,13 @@
 			},
 			'selected'(newId){
 				if(newId != $(this.$el).val()){
-					console.log("changed 3");
 					this.selectedData = this.selected !== null ? this.selected : 0;
 					$(this.$el).val(this.selectedData).trigger('change');
 				}
 			},
 			'selectedData'(newId){
-				console.log("changed 2["+newId+", "+$(this.$el).val()+"]");
-				EventHub.$emit('selectedValue', newId);
+				let parentId = this.parent != null ? `_${this.parent}` : ''; 
+				EventHub.$emit(`selectedValue${parentId}`, newId);
 			}
 		}
 	}

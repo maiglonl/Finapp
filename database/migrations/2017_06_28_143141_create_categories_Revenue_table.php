@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateCategoriesTable extends Migration{
+class CreateCategoriesRevenueTable extends Migration{
 
 	/**
 	 * Run the migrations.
@@ -11,7 +11,7 @@ class CreateCategoriesTable extends Migration{
 	 * @return void
 	 */
 	public function up(){
-		Schema::create('categories', function(Blueprint $table) {
+		Schema::create('category_revenues', function(Blueprint $table) {
 			$table->increments('id');
 			$table->string('name');
 			\Kalnoy\Nestedset\NestedSet::columns($table);
@@ -27,7 +27,7 @@ class CreateCategoriesTable extends Migration{
 	 * @return void
 	 */
 	public function down(){
-		Schema::drop('categories');
+		Schema::drop('category_revenues');
 	}
 
 }
