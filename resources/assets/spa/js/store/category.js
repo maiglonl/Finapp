@@ -51,7 +51,7 @@ export default() => {
 			}
 		},
 		edit(state, categoryUpdated){
-			if(state.category.parent_id === null){
+			if(categoryUpdated.parent_id === null){
 				/*
 				 * Categoria alterada,
 				 * está sem pai e antes tinha pai
@@ -119,9 +119,6 @@ export default() => {
 		},
 		setParent(state, parent){
 			state.parent = parent;
-		},
-		setResource(state, type){
-			state.resource = type == 'categoryRevenue' ? CategoryRevenue : CategoryExpense;
 		}
 	};
 
