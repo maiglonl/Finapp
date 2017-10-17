@@ -115,11 +115,8 @@
 				});
 			},
 			openModalDelete(bankAccount){
-				console.log(1);
 				store.commit('bankAccount/setDelete', bankAccount);
-				console.log(this.bankAccountDelete);
 				$('#modal-delete').modal('open');
-				console.log(3);
 			},
 			changePage(page){
 				store.dispatch('bankAccount/queryWithPagination', page);

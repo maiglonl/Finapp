@@ -15,7 +15,8 @@
 				type: Object,
 				default(){
 					return {
-						id: ''
+						id: '',
+						options: {}
 					}
 				}
 			}
@@ -23,7 +24,7 @@
 		mounted(){
 			let id = this.modal.id;
 			$(document).ready(function() {
-				$(`#${id}`).modal();
+				$(`#${id}`).modal(this.modal.options);
 			});
 		}
 	};

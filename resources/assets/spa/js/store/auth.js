@@ -30,7 +30,6 @@ const mutations = {
 
 const actions = {
 	login(context, {email, password}){
-		console.log(1);
 		return jwtToken.accessToken(email, password).then((response) => {
 			context.commit('autenticated');
 			context.dispatch('getUser');
@@ -38,9 +37,7 @@ const actions = {
 		});
 	},
 	getUser(context){
-		console.log(3);
 		return User.get().then((response) => {
-			console.log(response);
 			context.commit('setUser', response.data);
 		});
 	},

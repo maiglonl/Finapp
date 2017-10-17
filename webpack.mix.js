@@ -16,5 +16,5 @@ mix.sass('resources/assets/admin/sass/admin.scss', 'public/css')
 
 mix.browserSync({
 	host: 'localhost',
-	proxy: 'http://127.0.0.1:8000'
+	proxy: process.env.API_URL
 });

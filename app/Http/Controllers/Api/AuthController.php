@@ -66,7 +66,7 @@ class AuthController extends Controller{
 		], 200);
 	}
 
-	 /**
+	/**
 	 * Log the user out of the application.
 	 *
 	 * @param  \Illuminate\Http\Request  $request
