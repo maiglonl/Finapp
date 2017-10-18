@@ -38,7 +38,6 @@ class AuthController extends Controller{
 
 	protected function sendLoginResponse(Request $request, $token){
 		$this->clearLoginAttempts($request);
-		dd(Auth::user('api'));
 		return response()->json([
 			'token' => $token
 		]);
