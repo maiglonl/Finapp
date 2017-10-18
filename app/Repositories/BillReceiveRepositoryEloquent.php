@@ -35,7 +35,6 @@ class BillReceiveRepositoryEloquent extends BaseRepository implements BillReceiv
 
     public function presenter()
     {
-    	return Bill
-    Presenter::class
+    	return BillPresenter::class;
     }
 }

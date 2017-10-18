@@ -3,11 +3,12 @@
 namespace Finapp\Http\Controllers\Api;
 
 use Finapp\Http\Controllers\Controller;
+use Finapp\Models\User;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Translation\Translator;
 use Illuminate\Support\Facades\Lang;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
-use Auth;
 
 class AuthController extends Controller{
 	use AuthenticatesUsers;
@@ -37,6 +38,7 @@ class AuthController extends Controller{
 
 	protected function sendLoginResponse(Request $request, $token){
 		$this->clearLoginAttempts($request);
+		dd(Auth::user('api'));
 		return response()->json([
 			'token' => $token
 		]);
@@ -58,12 +60,6 @@ class AuthController extends Controller{
 		return response()->json([
 			'message' => $message
 		], 400);
-	}
-
-	protected function getUserName(){
-		return response()->json([
-			'user' => Auth::user()->name
-		], 200);
 	}
 
 	/**

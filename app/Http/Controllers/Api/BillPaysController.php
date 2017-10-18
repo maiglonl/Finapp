@@ -1,7 +1,8 @@
 <?php
 
-namespace Finapp\Http\Controllers;
+namespace Finapp\Http\Controllers\Api;
 
+use Finapp\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Finapp\Http\Requests;
 use Finapp\Http\Requests\BillPayRequest;

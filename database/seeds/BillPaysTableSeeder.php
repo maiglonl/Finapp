@@ -12,11 +12,12 @@ class BillPaysTableSeeder extends Seeder
      */
     public function run()
     {
+		echo("3.1");
         $clients = $this->getClients();
 
         factory(\Finapp\Models\BillPay::class, 200)
         	->make()
-        	->each(finction($billPay) use($clients){
+        	->each(function($billPay) use($clients){
         		$client = $clients->random();
         		$billPay->client_id = $client->id;
         		$billPay->save();
