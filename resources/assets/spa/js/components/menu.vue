@@ -54,14 +54,20 @@
 				menus: [
 					{ name: "Conta bancária", routeName: 'bank-account.list'},
 					{ name: "Plano de Contas", routeName: 'plan-account'},
-					{ name: "Contas a receber", dropdownId: 'billReceiveMenu'},
+					{ name: "Contas", dropdownId: 'billsMenu'},
 				],
 				menusDropdown: [
 					{
-						id: 'billReceiveMenu',
+						id: 'billPayMenu',
 						items: [
 							{ name: "Cadastrar Conta", routeName: 'auth.login' },
 							{ name: "Listar Contas", routeName: 'auth.login' },
+						]
+					},{
+						id: 'billsMenu',
+						items: [
+							{ name: "À Pagar", routeName: 'bill-pay.list' },
+							{ name: "À Receber", routeName: 'bill-receive.list' },
 						]
 					},
 				]

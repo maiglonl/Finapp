@@ -5,6 +5,8 @@ import BankAccountListComponent from './components/bank-account/bankAccountList.
 import BankAccountCreateComponent from './components/bank-account/bankAccountCreate.vue';
 import BankAccountUpdateComponent from './components/bank-account/bankAccountUpdate.vue';
 import PlanAccountComponent from './components/category/planAccount.vue';
+import BillPayListComponent from './components/bill/bill-pay/billPayList.vue';
+import BillReceiveListComponent from './components/bill/bill-receive/billReceiveList.vue';
 export default [{ 
 		name: 'auth.login',
 		path: '/login', 
@@ -43,6 +45,28 @@ export default [{
 				name: 'bank-account.create',
 				path: '/create', 
 				component: BankAccountCreateComponent,
+				meta: { auth: true }
+			}
+		]
+	},{
+		path: '/bill-pays', 
+		component: { template: '<router-view></router-view>' },
+		children: [
+			{ 
+				name: 'bill-pay.list',
+				path: '/', 
+				component: BillPayListComponent,
+				meta: { auth: true }
+			}
+		]
+	},{
+		path: '/bill-receives', 
+		component: { template: '<router-view></router-view>' },
+		children: [
+			{ 
+				name: 'bill-receive.list',
+				path: '/', 
+				component: BillReceiveListComponent,
 				meta: { auth: true }
 			}
 		]

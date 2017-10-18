@@ -2,7 +2,6 @@
 
 namespace Finapp\Http\Controllers\Api;
 
-
 use Finapp\Http\Controllers\Controller;
 use Finapp\Repositories\CategoryRevenueRepository;
 use Finapp\Criteria\WithDepthCategoriesCriteria;

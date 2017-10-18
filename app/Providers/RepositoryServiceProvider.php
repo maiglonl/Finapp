@@ -28,6 +28,8 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(\Finapp\Repositories\ClientRepository::class, \Finapp\Repositories\ClientRepositoryEloquent::class);
         $this->app->bind(\Finapp\Repositories\CategoryExpenseRepository::class, \Finapp\Repositories\CategoryExpenseRepositoryEloquent::class);
         $this->app->bind(\Finapp\Repositories\CategoryRevenueRepository::class, \Finapp\Repositories\CategoryRevenueRepositoryEloquent::class);
+        $this->app->bind(\Finapp\Repositories\BillPayRepository::class, \Finapp\Repositories\BillPayRepositoryEloquent::class);
+        $this->app->bind(\Finapp\Repositories\BillReceiveRepository::class, \Finapp\Repositories\BillReceiveRepositoryEloquent::class);
         //:end-bindings:
     }
 }

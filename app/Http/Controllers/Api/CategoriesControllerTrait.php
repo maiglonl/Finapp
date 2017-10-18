@@ -2,7 +2,6 @@
 
 namespace Finapp\Http\Controllers\Api;
 
-
 use Finapp\Http\Requests\CategoryRequest;
 use Finapp\Criteria\FindRootCategoriesCriteria;
 

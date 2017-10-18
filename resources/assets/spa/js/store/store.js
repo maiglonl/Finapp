@@ -4,6 +4,7 @@ import auth from './auth';
 import bankAccount from './bank-account';
 import bank from './bank';
 import categoryModule from './category';
+import billModule from './bill';
 import {CategoryRevenue, CategoryExpense} from '../services/resources'
 import {BillPay, BillReceive} from '../services/resources'
 

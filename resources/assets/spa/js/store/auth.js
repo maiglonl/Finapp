@@ -11,7 +11,6 @@ const state = {
 
 const mutations = {
 	setUser(state, user){
-		console.log('->'+user);
 		state.user = user;
 		if(user !== null){
 			localStorage.setObject(USER, user);
@@ -20,7 +19,6 @@ const mutations = {
 		}
 	},
 	autenticated(state){
-		console.log(2);
 		state.check = true;
 	},
 	unautenticated(state){

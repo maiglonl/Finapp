@@ -23,8 +23,9 @@
 		},
 		mounted(){
 			let id = this.modal.id;
+			let self = this;
 			$(document).ready(function() {
-				$(`#${id}`).modal(this.modal.options);
+				$(`#${id}`).modal(self.modal.options);
 			});
 		}
 	};

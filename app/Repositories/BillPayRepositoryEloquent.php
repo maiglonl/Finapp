@@ -35,7 +35,6 @@ class BillPayRepositoryEloquent extends BaseRepository implements BillPayReposit
 
     public function presenter()
     {
-    	return Bill
-    Presenter::class
+    	return BillPresenter::class;
     }
 }
