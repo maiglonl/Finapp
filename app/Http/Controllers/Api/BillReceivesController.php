@@ -45,4 +45,5 @@ class BillReceivesController extends Controller
 	{
 		$this->repository->delete($id);
 		return response()->json([], 204);
+	}
 }

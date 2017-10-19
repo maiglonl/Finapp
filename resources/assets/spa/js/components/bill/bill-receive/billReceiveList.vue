@@ -47,7 +47,7 @@
 		</div>
 
 		<bill-receive-create :modal-options="modalCreate"></bill-receive-create>
-		<bill-receive-update :index="idexUpdate" :modal-options="modalEdit"></bill-receive-update>
+		<bill-receive-update :index="indexUpdate" :modal-options="modalEdit"></bill-receive-update>
 
 		<modal :modal="modalDelete" v-if="billReceiveDelete">
 			<div slot="content">
@@ -88,7 +88,7 @@
 		data() {
 			return {
 				modalDelete: {
-					id: 'modal_delete'
+					id: 'modal-delete'
 				},
 				modalCreate: {
 					id: 'modal-create'

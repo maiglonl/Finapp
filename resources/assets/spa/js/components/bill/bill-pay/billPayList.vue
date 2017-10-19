@@ -47,10 +47,10 @@
 		</div>
 
 		<bill-pay-create :modal-options="modalCreate"></bill-pay-create>
-		<bill-pay-update :index="idexUpdate" :modal-options="modalEdit"></bill-pay-update>
+		<bill-pay-update :index="indexUpdate" :modal-options="modalEdit"></bill-pay-update>
 
-		<modal :modal="modalDelete" v-if="billPayDelete">
-			<div slot="content">
+		<modal :modal="modalDelete">
+			<div slot="content" v-if="billPayDelete">
 				<h4>Mensagem de confirmação</h4>
 				<p>Deseja excluir a conta?</p>
 				<div class="divider"></div>
@@ -88,7 +88,7 @@
 		data() {
 			return {
 				modalDelete: {
-					id: 'modal_delete'
+					id: 'modal-delete'
 				},
 				modalCreate: {
 					id: 'modal-create'
@@ -150,6 +150,7 @@
 				$('#modal-edit').modal('open');
 			},
 			openModalDelete(billPay){
+				console.log(123);
 				store.commit('billPay/setDelete', billPay);
 				$('#modal-delete').modal('open');
 			},

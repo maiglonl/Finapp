@@ -20,7 +20,8 @@
 
 	// SIGNATURE
 
-	$key = 'biwdb208rvb874s734v9uhkjznlw0s7z4098j';
+	//$key = 'biwdb208rvb874s734v9uhkjznlw0s7z4098j';
+	$key = 'y81c21SUDwkAhgScSHWxAVKrLSJ3c9C3';
 
 	$signature = hash_hmac('sha256', "$header.$payload", $key, true);
 	$signature = base64_encode($signature);

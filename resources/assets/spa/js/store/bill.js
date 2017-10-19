@@ -14,7 +14,7 @@ export default() => {
 			state.bills = bills;
 		},
 		update(state, {index, bill}){
-			state.bills.$set(index,bill);
+			Vue.set(state.bills, index, bill);
 		},
 		setDelete(state, bill){
 			state.billDelete = bill;
@@ -61,7 +61,7 @@ export default() => {
 		},
 		'delete'(context){
 			let id = context.state.billDelete.id;
-			return bill.delete({id: id}).then((response) => {
+			return context.state.resource.delete({id: id}).then((response) => {
 				context.commit('delete');
 				context.commit('setDelete', null);
 
