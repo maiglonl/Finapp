@@ -23,9 +23,9 @@
 					<tbody>
 						<tr v-for="(o, index) in bills">
 							<td>{{ o.id }}</td>
-							<td>{{ o.date_due }}</td>
+							<td>{{ o.date_due | dateFormat }}</td>
 							<td>{{ o.name }}</td>
-							<td>{{ o.value }}</td>
+							<td>{{ o.value | numberFormat }}</td>
 							<td>
 								<a href="#" @click.prevent="openModalEdit(index)">Editar</a>
 								<a href="#" @click.prevent="openModalDelete(o)">Excluir</a>
@@ -128,6 +128,8 @@
 		},
 		created(){
 			store.dispatch('billPay/query');
+			store.dispatch('bankAccount/lists');
+			store.dispatch('categoryExpense/query');
 			EventHub.$on('pageChanged', this.changePage);
 			EventHub.$on('searchSubmit', this.filter);
 		},

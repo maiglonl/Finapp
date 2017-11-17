@@ -15,10 +15,14 @@
 			this.modalOptions.options.complete = () => {
 				self.resetScope();
 			};
+			EventHub.$on(`selectedValue_${this._uid}`, this.changeCategoryId);
 		},
 		methods: {
 			namespace(){
 				return 'billPay';
+			},
+			categoryNamespace(){
+				return 'categoryExpense';
 			},
 			title(){
 				return 'Editar conta à pagar';
@@ -32,6 +36,10 @@
 					value: bill.value,
 					done: bill.done
 				};
+			},
+			changeCategoryId(newId){
+				let newVal = newId !== 0 ? newId : null;
+				this.bill.category_id = newId;
 			}
 		}
 	}

@@ -1,11 +1,13 @@
 import PageTitleComponent from '../components/pageTitle.vue';
 import ModalComponent from '../../../_default/components/Modal.vue';
+import SelectMaterialComponent from '../../../_default/components/selectMaterial.vue';
 import store from '../store/store';
 
 export default {
 	components: {
 		'page-title': PageTitleComponent,
 		'modal': ModalComponent,
+		'select-material': SelectMaterialComponent,
 	},
 	props: {
 		index: {
@@ -20,18 +22,74 @@ export default {
 	},
 	data(){
 		return {
+			bank: {},
 			bill:{
 				id: 0,
 				date_due: '',
 				name: '',
 				value: '',
-				done: false
+				done: false,
+				bank_account_id: 0,
+				category_id: 0
 			}
 		};
+	},
+	computed: {
+		bankAccounts(){
+			return store.state.bankAccount.lists;
+		},
+		categoriesFormatted(){
+			return store.getters[`${this.categoryNamespace()}/categoriesFormatted`];
+		},
+		cpOptions(){
+			return{
+				data: this.categoriesFormatted,
+				templateResult(category){
+					let margin = '&nbsp'.repeat(category.level*5);
+					let text = category.hasChildren ? `<strong>${category.text}</strong>` : category.text;
+					return `${margin}${text}`;
+				},
+				escapeMarkup(m){ return m; }
+			}
+		},
+	},
+	watch: {
+		bankAccounts(bankAccounts){
+			if(bankAccounts.length > 0){
+				this.initAutocomplete();
+			}
+		}
 	},
 	methods: {
 		doneId(){
 			return `done-${this._uid}`;
+		},
+		bankAccountTextId(){
+			return `bank-account-text-${this._uid}`;
+		},
+		bankAccountDropdownId(){
+			return `bank-account-dropdown-${this._uid}`;
+		},
+		initAutocomplete(){
+			let self = this;
+			$(`#${this.bankAccountTextId()}`).materialize_autocomplete({
+				limit: 10,
+				multiple: {
+					enabled: false
+				},
+				dropdown: {
+					el: `#${this.bankAccountDropdownId()}`
+				},
+				getData(value, callback){
+					let mapBankAccounts = store.getters['bankAccount/mapBankAccounts'];
+					let bankAccounts = mapBankAccounts(value);
+					callback(value, bankAccounts);
+				},
+				onSelect(item){
+					self.bill.bank_account_id = item.id;
+					console.log({id: item.id, name: item.text});
+				}
+			});
 		},
 		submit(){
 			if(this.bill.id !== 0) {
@@ -55,7 +113,9 @@ export default {
 				date_due: '',
 				name: '',
 				value: '',
-				done: false
+				done: false,
+				bank_account_id: 0,
+				category_id: 0
 			}
 		}
 	}

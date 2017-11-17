@@ -7,6 +7,9 @@ var VueResource = require('vue-resource');
 Vue.use(VueResource);
 
 var Vuex = require('vuex');
+require('./filters');
+require('./validators');
+
 Vue.use(Vuex);
 
 Vue.http.options.root = appConfig.api_url;

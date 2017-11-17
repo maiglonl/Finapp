@@ -22,6 +22,10 @@ class BankAccountsController extends Controller{
 		$this->repository = $repository;
 	}
 
+	public function lists()
+	{
+		return $this->repository->skipPresenter()->all(['id', 'name', 'account']);
+	}
 
 	/**
 	 * Display a listing of the resource.
@@ -29,8 +33,6 @@ class BankAccountsController extends Controller{
 	 * @return \Illuminate\Http\Response
 	 */
 	public function index(){
-		//$this->repository->pushCriteria(new FindByNameCriteria('a'))
-		//	->pushCriteria(new FindByAgencyCriteria('0'));
 		$bankAccounts = $this->repository->paginate();
 		return $bankAccounts;
 	}
@@ -83,7 +85,6 @@ class BankAccountsController extends Controller{
 	 */
 	public function destroy($id){
 		$this->repository->delete($id);
-
 		return response()->json([], 204);
 	}
 }

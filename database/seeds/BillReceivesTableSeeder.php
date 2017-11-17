@@ -12,15 +12,18 @@ class BillReceivesTableSeeder extends Seeder
      */
     public function run()
     {
-		echo("3.1");
         $clients = $this->getClients();
 
         factory(\Finapp\Models\BillReceive::class, 200)
         	->make()
         	->each(function($billReceive) use($clients){
-        		$client = $clients->random();
-        		$billReceive->client_id = $client->id;
-        		$billReceive->save();
-        	});
+				$client = $clients->random();
+				$bankAccount = $client->bankAccounts->random();
+				$category = $client->categoryRevenues->random();
+				$billReceive->client_id = $client->id;
+				$billReceive->bank_account_id = $bankAccount->id;
+				$billReceive->category_id = $category->id;
+				$billReceive->save();
+			});
     }
 }
