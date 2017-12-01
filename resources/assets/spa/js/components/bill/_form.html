@@ -1,47 +1,70 @@
 <div>
-	<form name="bill-form" method="POST" @submit.prevent="submit">
+	<form :id="formId()" name="bill-form" method="POST" @submit.prevent="submit">
 		<modal :modal="modalOptions">
 			<div slot="content">
 				<page-title>
-					<h5>{{title()}}</h5>
+					<h5>{{title()}} - {{bill.repeat}}</h5>
 				</page-title>
 				<div class="row">
 					<div class="input-field col s12">
-						<label class="active">Conta Bancária</label>
-						<input type="text" :id="bankAccountTextId()" autocomplete="off" :data-activates="bankAccountDropdownId()" data-beloworigin="true" :value="bank.name"/>
-						<ul :id="bankAccountDropdownId()" class="dropdown-content ac-dropdown"></ul>
+						<select-material :options="cpOptions" :selected="bill.category_id" :parent="this._uid"
+							v-validate="'required|min_value:1'" data-vv-name="category_id" name="category_id" data-vv-value-path="val"></select-material>
+						<label class="active" :data-error="errors.first('category_id')" >Categoria</label>
 					</div>
 				</div>
 				<div class="row">
-					<div class="input-field col s12">
-						<select-material :options="cpOptions" :selected="bill.category_id" :parent="this._uid"></select-material>
-						<label class="active">Categoria</label>
+					<div class="input-field col s4">
+						<input type="date" v-model="bill.date_due" class="validate" id="date_due" name="date_due"
+							v-validate="'required'" data-vv-as="vencimento" :class="{'invalid': errors.has('date_due')}">
+						<label class="active" :data-error="errors.first('date_due')" >Vencimento</label>
 					</div>
-				</div>
-				<div class="row">
-					<div class="input-field col s6">
-						<label class="active">Vencimento</label>
-						<input type="date" v-model="bill.date_due">
+					<div class="input-field col s4">
+						<input type="number" step="0.01" v-model="bill.value" class="validate" id="value" name="value"
+							v-validate="'required|min_value:0.01'" data-vv-as="valor" :class="{'invalid': errors.has('value')}">
+						<label :data-error="errors.first('value')" >Valor</label>
 					</div>
-					<div class="input-field col s6">
-						<label>Valor</label>
-						<input type="number" step="0.01" v-model="bill.value">
-					</div>
-				</div>
-				<div class="row">
-					<div class="input-field col s6">
-						<input type="text" v-model="bill.name" id="name" name="name" class="validate" 
-							v-validate v-validate="required" data-vv-as="nome" :class="{'invalid': errors.has('name')}">
-						<label for="name" :data-error="errors.first('name')">Nome</label>
-					</div>
-					<div class="input-field col s6">
+					<div class="input-field col s4">
 						<input type="checkbox" v-model="bill.done" :id="doneId()">
 						<label :for="doneId()">Pago</label>
 					</div>
 				</div>
+				<div class="row">
+					<div class="input-field col s12">
+						<input type="text" v-model="bill.name" id="name" name="name" class="validate" 
+							v-validate="'required'" data-vv-as="nome" :class="{'invalid': errors.has('name')}">
+						<label for="name" :data-error="errors.first('name')">Nome</label>
+					</div>
+				</div>
+				<div class="row">
+					<div class="input-field col s12">
+						<input type="text" :id="bankAccountTextId()" autocomplete="off" @blur="blurBankAccount" class="validate" 
+							:data-activates="bankAccountDropdownId()" data-beloworigin="true" :value="bill.bankAccountText"
+							:class="{'invalid': errors.has('bank_account_id')}" />
+						<label class="active" :data-error="errors.first('bank_account_id')">Conta Bancária</label>
+						<input type="hidden" name="bank_account_id" :id="bankAccountHiddenId()"
+							:value="bill.bank_account_id" v-validate="'required'">
+						<ul :id="bankAccountDropdownId()" class="dropdown-content ac-dropdown"></ul>
+					</div>
+				</div>
+				<div class="row">
+					<div class="input-field col s3">
+						<input type="checkbox" v-model="bill.repeat" :id="repeatId()">
+						<label :for="repeatId()">Repetir?</label>
+					</div>
+					<div class="input-field col s5" v-if="bill.repeat == true">
+						<select v-model="bill.repeat_type" class="browser-default">
+							<option value="1">Mensalmente</option>
+							<option value="2">Anualmente</option>
+						</select>
+					</div>
+					<div class="input-field col s4" v-if="bill.repeat == true">
+						<input type="number" min="0" v-model="bill.repeat_number">
+						<label>Ocorrências:</label>
+					</div>
+				</div>
 			</div>
 			<div slot="footer">
-				<button type="submit" class="btn btn-flat waves-effect green lighten-2 modal-close modal-action">OK</button>
+				<button type="submit" class="btn btn-flat waves-effect green lighten-2" :disabled="errors.any()">OK</button>
 				<button type="button" class="btn btn-flat waves-effect waves-red modal-close modal-action">Cancelar</button>
 			</div>
 		</modal>

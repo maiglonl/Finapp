@@ -2,6 +2,7 @@ import PageTitleComponent from '../components/pageTitle.vue';
 import ModalComponent from '../../../_default/components/Modal.vue';
 import SelectMaterialComponent from '../../../_default/components/selectMaterial.vue';
 import store from '../store/store';
+import Bill from '../models/bill';
 
 export default {
 	components: {
@@ -22,16 +23,7 @@ export default {
 	},
 	data(){
 		return {
-			bank: {},
-			bill:{
-				id: 0,
-				date_due: '',
-				name: '',
-				value: '',
-				done: false,
-				bank_account_id: 0,
-				category_id: 0
-			}
+			bill: new Bill()
 		};
 	},
 	computed: {
@@ -61,6 +53,48 @@ export default {
 		}
 	},
 	methods: {
+		validateCategory(){
+			this.$validator.validate('category_id', this.bill.category_id).then((result)=>{
+				let valid = result;
+				let parent = $(`#${this.formId()}`).find('[name="category_id"]').parent();
+				let label = parent.find('label');
+				let spanSelect2 = parent.find('.select2-selection.select2-selection--single');
+				if(valid){
+					label.removeClass('label-error');
+					spanSelect2.removeClass('select2-invalid');
+				}else{
+					label.removeClass('label-error').addClass('label-error');
+					spanSelect2.removeClass('select2-invalid').addClass('select2-invalid');
+				}
+			});
+		},
+		validateBankAccount(){
+			this.$validator.validate('bank_account_id', this.bill.bank_account_id);
+		},
+		initSelect2(){
+			let select = $(`#${this.formId()}`).find('[name="category_id"]');
+			let self = this;
+			select.on('select2:close', () => {
+				// TODO: Corrigir execução do evento
+			});
+		},
+		blurBankAccount($event){
+			let el = $($event.target);
+			let text = this.bill.bankAccountText;
+			if(el.val() != text){
+				el.val(text);
+			}
+			this.validateBankAccount();
+		},
+		bankAccountHiddenId(){
+			return `bank-account-hidden-${this._uid}`;
+		},
+		formId(){
+			return `form-bill-${this._uid}`;
+		},
+		repeatId(){
+			return `repeat-bill-${this._uid}`;
+		},
 		doneId(){
 			return `done-${this._uid}`;
 		},
@@ -74,12 +108,9 @@ export default {
 			let self = this;
 			$(`#${this.bankAccountTextId()}`).materialize_autocomplete({
 				limit: 10,
-				multiple: {
-					enabled: false
-				},
-				dropdown: {
-					el: `#${this.bankAccountDropdownId()}`
-				},
+				multiple: { enabled: false },
+				hidden: { el: `#${this.bankAccountHiddenId()}` },
+				dropdown: { el: `#${this.bankAccountDropdownId()}` },
 				getData(value, callback){
 					let mapBankAccounts = store.getters['bankAccount/mapBankAccounts'];
 					let bankAccounts = mapBankAccounts(value);
@@ -87,36 +118,46 @@ export default {
 				},
 				onSelect(item){
 					self.bill.bank_account_id = item.id;
-					console.log({id: item.id, name: item.text});
+					self.bill.bankAccountText = item.text;
+					self.validateBankAccount();
 				}
 			});
+			$(`#${this.bankAccountTextId()}`).parent().find('label').insertAfter(`#${this.bankAccountTextId()}`);
 		},
 		submit(){
-			if(this.bill.id !== 0) {
-				store.dispatch(`${this.namespace()}/edit`, {
-					bill: this.bill,
-					index: this.index
-				}).then(() => {
-					Materialize.toast('Conta atualizada com sucesso!', 2000);
-					this.resetScope();
-				});
-			} else {
-				store.dispatch(`${this.namespace()}/save`, this.bill).then(() => {
-					Materialize.toast('Conta criada com sucesso!', 2000);
-					this.resetScope();
-				});
-			}
+			this.validateCategory();
+			this.$validator.validateAll().then(success => {
+				if(success){
+					if(this.bill.id !== 0) {
+						store.dispatch(`${this.namespace()}/edit`, {
+							bill: this.bill,
+							index: this.index
+						}).then(() => {
+							this.successSave('Conta atualizada com sucesso!');
+						});
+					} else {
+						store.dispatch(`${this.namespace()}/save`, this.bill).then(() => {
+							this.successSave('Conta criada com sucesso!');
+						});
+					}
+				}
+			})
+			
+		},
+		successSave(message){
+			$(`#${this.modalOptions.id}`).modal('close');
+			Materialize.toast(message, 2000);
+			this.resetScope();
 		},
 		resetScope(){
-			this.bill = {
-				id: 0,
-				date_due: '',
-				name: '',
-				value: '',
-				done: false,
-				bank_account_id: 0,
-				category_id: 0
-			}
+			this.errors.clear();
+			this.$validator.clean();
+			this.bill.init();
+ 		},
+		changeCategoryId(newId){
+			let newVal = newId !== 0 ? newId : null;
+			this.bill.category_id = newId;
+			this.validateCategory();
 		}
 	}
 }

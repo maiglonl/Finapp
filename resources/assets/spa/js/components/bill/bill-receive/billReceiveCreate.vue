@@ -14,14 +14,15 @@
 			},
 			title(){
 				return 'Nova conta à receber';
-			},
-			changeCategoryId(newId){
-				let newVal = newId !== 0 ? newId : null;
-				this.bill.category_id = newId;
 			}
 		},
 		created(){
 			EventHub.$on(`selectedValue_${this._uid}`, this.changeCategoryId);
+		},
+		mounted(){
+			this.initSelect2();
 		}
 	}
 </script>
+
+<style type="text/css" scoped src="../_style.css"></style>

@@ -15,10 +15,6 @@
 			title(){
 				return 'Nova conta à pagar';
 			},
-			changeCategoryId(newId){
-				let newVal = newId !== 0 ? newId : null;
-				this.bill.category_id = newId;
-			},
 			validateBeforeSubmit() {
 				this.$validator.validateAll().then((result) => {
 					if (result) {
@@ -33,6 +29,11 @@
 		},
 		created(){
 			EventHub.$on(`selectedValue_${this._uid}`, this.changeCategoryId);
+		},
+		mounted(){
+			this.initSelect2();
 		}
 	}
 </script>
+
+<style type="text/css" scoped src="../_style.css"></style>

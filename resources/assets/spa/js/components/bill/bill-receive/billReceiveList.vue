@@ -161,8 +161,8 @@
 			sortBy(key){
 				store.dispatch('billReceive/queryWithSortBy', key);
 			},
-			filter(){
-				store.dispatch('billReceive/queryWithFilter');
+			filter(filter){
+				store.dispatch('billReceive/queryWithFilter', filter);
 			},
 		}
 	}

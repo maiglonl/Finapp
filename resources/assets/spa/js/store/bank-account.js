@@ -105,10 +105,15 @@ const getters = {
 		return (name) => {
 			let bankAccounts = getters.filterBankAccountByName(name);
 			return bankAccounts.map((o) => {
-				return {id: o.id, text: `${o.name} - ${o.account}`};
+				return {id: o.id, text: getters.textAutocomplete(o)};
 			});
 		}
-	}
+	},
+	textAutocomplete(state){
+		return (bankAccount) => {
+			return `${bankAccount.name} - ${bankAccount.account}`;
+		}
+	},
 };
 
 const module = {

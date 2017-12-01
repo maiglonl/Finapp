@@ -36,11 +36,12 @@
 					value: bill.value,
 					done: bill.done
 				};
-			},
-			changeCategoryId(newId){
-				let newVal = newId !== 0 ? newId : null;
-				this.bill.category_id = newId;
 			}
+		},
+		mounted(){
+			this.initSelect2();
 		}
 	}
 </script>
+
+<style type="text/css" scoped src="../_style.css"></style>

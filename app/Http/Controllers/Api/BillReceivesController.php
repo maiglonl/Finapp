@@ -7,6 +7,9 @@ use Illuminate\Http\Request;
 use Finapp\Http\Requests;
 use Finapp\Http\Requests\BillReceiveRequest;
 use Finapp\Repositories\BillReceiveRepository;
+use Finapp\Criteria\FindByNameCriteria;
+use Finapp\Criteria\FindByValueBRCriteria;
+use Finapp\Criteria\FindBetweenDateBRCriteria;
 
 class BillReceivesController extends Controller {
 	protected $repository;
@@ -15,8 +18,14 @@ class BillReceivesController extends Controller {
 		$this->repository = $repository;
 	}
 
-	public function index(){
-		$billReceives = $this->repository->paginate(3);
+	public function index(Request $request){
+		$searchParam = config('repository.criteria.params.search');
+		$search = $request->get($searchParam);
+		$this->repository
+			->pushCriteria(new FindByNameCriteria($search))
+			->pushCriteria(new FindByValueBRCriteria($search))
+			->pushCriteria(new FindBetweenDateBRCriteria($search));
+		$billReceives = $this->repository->paginate(15);
 		return $billReceives;
 	}
 

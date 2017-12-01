@@ -3,18 +3,17 @@
 namespace Finapp\Repositories;
 
 use Prettus\Repository\Eloquent\BaseRepository;
-use Prettus\Repository\Criteria\RequestCriteria;
 use Finapp\Repositories\BillReceiveRepository;
 use Finapp\Models\BillReceive;
-use Finapp\Validators\BillReceiveValidator;
-use Finapp\Presenters\BillPresenter;
 
 /**
  * Class BillReceiveRepositoryEloquent
  * @package namespace Finapp\Repositories;
  */
-class BillReceiveRepositoryEloquent extends BaseRepository implements BillReceiveRepository
-{
+class BillReceiveRepositoryEloquent extends BaseRepository implements BillReceiveRepository {
+
+	use BillRepositoryTrait;
+
     /**
      * Specify Model class name
      *
@@ -25,16 +24,4 @@ class BillReceiveRepositoryEloquent extends BaseRepository implements BillReceiv
         return BillReceive::class;
     }
 
-    /**
-     * Boot up the repository, pushing criteria
-     */
-    public function boot()
-    {
-        $this->pushCriteria(app(RequestCriteria::class));
-    }
-
-    public function presenter()
-    {
-    	return BillPresenter::class;
-    }
 }

@@ -3,6 +3,7 @@
 <script type="text/javascript">
 	import billPayMixin from '../../../mixins/bill-mixin';
 	import store from '../../../store/store';
+	import Bill from '../../../models/bill';
 
 	export default {
 		mixins: [billPayMixin],
@@ -28,19 +29,17 @@
 				return 'Editar conta à pagar';
 			},
 			getBill(){
+				this.resetScope();
 				let bill = store.getters[`${this.namespace()}/billByIndex`](this.index);
-				this.bill = {
-					id: bill.id,
-					date_due: bill.date_due,
-					name: bill.name,
-					value: bill.value,
-					done: bill.done
-				};
-			},
-			changeCategoryId(newId){
-				let newVal = newId !== 0 ? newId : null;
-				this.bill.category_id = newId;
+				this.bill = new Bill(bill);
+				let text = store.getters['bankAccount/textAutocomplete'](bill.bankAccount.data);
+				this.bill.bankAccountText = text;
 			}
+		},
+		mounted(){
+			this.initSelect2();
 		}
 	}
 </script>
+
+<style type="text/css" scoped src="../_style.css"></style>

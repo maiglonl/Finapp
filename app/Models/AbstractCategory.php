@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Kalnoy\Nestedset\NodeTrait;
 use Prettus\Repository\Contracts\Transformable;
 use Prettus\Repository\Traits\TransformableTrait;
+use Finapp\Models\Statement;
 
 abstract class AbstractCategory extends Model implements Transformable{
 	use TransformableTrait;
@@ -28,4 +29,7 @@ abstract class AbstractCategory extends Model implements Transformable{
 		return $builder;
 	}
 
+	public function statements(){
+		return $this->morphMany(Statement::class, 'statementable');
+	}
 }

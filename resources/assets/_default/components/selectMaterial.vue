@@ -22,20 +22,20 @@
 		},
 		data(){
 			return{
+				val: null,
 				optionsData: [],
 				selectedData: 0
 			}
 		},
 		mounted(){
 			this.optionsData = this.options;
-			this.selectedData = this.selected !== null ? this.selected : 0;
+			this.selectedData = this.getValue(this.selected);
 			let self = this;
 			$(this.$el)
 				.select2(this.optionsData)
 				.on('change', function(){
-					if(self.selectedData != $(this.$el).val()){
-						self.selectedData = this.value;
-					}
+					self.selectedData = self.getSelectedValue(this.value);
+					self.val = this.value;
 				});
 			$(this.$el).val(this.selectedData).trigger('change');
 		},
@@ -47,13 +47,21 @@
 			},
 			'selected'(newId){
 				if(newId != $(this.$el).val()){
-					this.selectedData = this.selected !== null ? this.selected : 0;
+					this.selectedData = this.getValue(newId);
 					$(this.$el).val(this.selectedData).trigger('change');
 				}
 			},
 			'selectedData'(newId){
 				let parentId = this.parent != null ? `_${this.parent}` : ''; 
 				EventHub.$emit(`selectedValue${parentId}`, newId);
+			}
+		},
+		methods: {
+			getSelectedValue(value){
+				return parseInt(value, 10) !== 0 ? value : null;
+			},
+			getValue(value){
+				return value !== null ? value : 0;
 			}
 		}
 	}

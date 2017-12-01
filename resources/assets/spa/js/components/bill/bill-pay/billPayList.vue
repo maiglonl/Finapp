@@ -152,7 +152,6 @@
 				$('#modal-edit').modal('open');
 			},
 			openModalDelete(billPay){
-				console.log(123);
 				store.commit('billPay/setDelete', billPay);
 				$('#modal-delete').modal('open');
 			},
@@ -162,8 +161,8 @@
 			sortBy(key){
 				store.dispatch('billPay/queryWithSortBy', key);
 			},
-			filter(){
-				store.dispatch('billPay/queryWithFilter');
+			filter(filter){
+				store.dispatch('billPay/queryWithFilter', filter);
 			},
 		}
 	}
