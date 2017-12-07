@@ -9,10 +9,6 @@ use Finapp\Events\BillStoredEvent;
 
 trait BillRepositoryTrait{
 
-	protected $fieldSearchable = [
-		'name' => 'like'
-	]
-
 	public function create(array $attributes){
 		$skipPresenter = $this->skipPresenter;
 		$this->skipPresenter(true);

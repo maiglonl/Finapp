@@ -59,7 +59,7 @@ $factory->define(\Finapp\Models\CategoryRevenue::class, function (Faker\Generato
 
 $factory->define(\Finapp\Models\BillPay::class, function (Faker\Generator $faker) {
 	return [
-		'date_due' => $faker->date(),
+		'date_due' => $faker->dateTimeBetween('0 years','+2 years')->format('Y-m-d'),
 		'name' => $faker->word,
 		'value' => $faker->numberBetween(10,1000),
 		'done' => rand(0,1)
@@ -68,7 +68,7 @@ $factory->define(\Finapp\Models\BillPay::class, function (Faker\Generator $faker
 
 $factory->define(\Finapp\Models\BillReceive::class, function (Faker\Generator $faker) {
 	return [
-		'date_due' => $faker->date(),
+		'date_due' => $faker->dateTimeBetween('0 years','+2 years')->format('Y-m-d'),
 		'name' => $faker->word,
 		'value' => $faker->numberBetween(10,1000),
 		'done' => rand(0,1)

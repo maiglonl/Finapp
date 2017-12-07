@@ -19,6 +19,15 @@ class BillStoredEvent{
 		$this->modelOld = $modelOld;
 	}
 
+	/**
+	 * Get the channels the event should broadcast on.
+	 *
+	 * @return Channel|array
+	 */
+	public function broadcastOn(){
+		return new PrivateChannel('channel-name');
+	}
+
 	public function getModel(){
 		return $this->model;
 	}

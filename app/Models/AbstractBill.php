@@ -9,6 +9,7 @@ use Prettus\Repository\Contracts\Transformable;
 use Prettus\Repository\Traits\TransformableTrait;
 use Finapp\Models\BankAccount;
 use Finapp\Models\CategoryExpense;
+use Finapp\Models\Statement;
 
 abstract class AbstractBill extends Model implements Transformable, BillRepeatTypeInterface{
 	use TransformableTrait;
@@ -25,11 +26,20 @@ abstract class AbstractBill extends Model implements Transformable, BillRepeatTy
     	'category_id'
     ];
 
+    protected $casts = [
+    	'value' => 'float', 
+    	'done' => 'boolean'
+    ];
+
     public function bankAccount(){
     	return $this->belongsTo(BankAccount::class);
     }
 
     public function category(){
     	return $this->belongsTo(CategoryExpense::class);
+    }
+
+    public function statements(){
+    	return $this->morphMany(Statement::class, 'statementable');
     }
 }

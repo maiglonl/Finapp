@@ -5,8 +5,10 @@ namespace Finapp\Providers;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 use Finapp\Events\BankStoredEvent;
+use Finapp\Events\BillStoredEvent;
 use Finapp\Listeners\BankLogoUploadListener;
 use Finapp\Listeners\BankAccountSetDefaultListener;
+use Finapp\Listeners\BankAccountUpdateBalanceListener;
 use Prettus\Repository\Events\RepositoryEntityCreated;
 use Prettus\Repository\Events\RepositoryEntityUpdated;
 
@@ -20,6 +22,9 @@ class EventServiceProvider extends ServiceProvider{
 	protected $listen = [
 		BankStoredEvent::class => [
 			BankLogoUploadListener::class
+		],
+		BillStoredEvent::class => [
+			BankAccountUpdateBalanceListener::class
 		],
 		RepositoryEntityCreated::class => [
 			BankAccountSetDefaultListener::class 

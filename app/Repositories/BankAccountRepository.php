@@ -11,5 +11,5 @@ use Prettus\Repository\Contracts\RepositoryCriteriaInterface;
  */
 interface BankAccountRepository extends RepositoryInterface
 {
-    //
+    public function addBalance($id, $value);
 }
