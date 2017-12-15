@@ -54,6 +54,7 @@
 				menus: [
 					{ name: "Conta bancária", routeName: 'bank-account.list'},
 					{ name: "Plano de Contas", routeName: 'plan-account'},
+					{ name: "Fluxo de caixa", routeName: 'cash-flow.list'},
 					{ name: "Contas", dropdownId: 'billsMenu'},
 				],
 				menusDropdown: [

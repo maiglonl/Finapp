@@ -17,6 +17,7 @@ use Illuminate\Http\Request;
 Route::group(['middleware' => ['cors', 'api'], 'as' => 'api.'], function(){
 	Route::post('/access_token', 'Api\AuthController@accessToken')->name('access_token');
 	Route::post('/refresh_token', 'Api\AuthController@refreshToken')->name('refresh_token');
+	Route::get('statements/cash_flow', 'Api\StatementsController@listCashFlow');
 
 	Route::group(['middleware' => 'auth:api'], function(){
 		Route::resource('banks', 'Api\BanksController', ['only' => ['index']]);
@@ -27,6 +28,7 @@ Route::group(['middleware' => ['cors', 'api'], 'as' => 'api.'], function(){
 		Route::resource('bill_pays', 'Api\BillPaysController');
 		Route::resource('bill_receives', 'Api\BillReceivesController', ['except' => ['create', 'edit']]);
 		Route::post('/logout', 'Api\AuthController@logout')->name('logout');
+		Route::get('cash_flows', 'Api\StatementsController@index');
 		Route::get('/user', function(Request $request){
 			return $request->user('api');
 		})->name('user');
