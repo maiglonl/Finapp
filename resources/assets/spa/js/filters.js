@@ -21,3 +21,7 @@ Vue.filter('dateFormat', (value) => {
 	}
 	return value;
 });
+
+Vue.filter('monthYear', (value) => {
+	return moment(`${value}-01`).format('MM/YYYY');
+});

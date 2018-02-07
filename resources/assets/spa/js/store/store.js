@@ -3,6 +3,7 @@ import Vuex from 'vuex';
 import auth from './auth';
 import bankAccount from './bank-account';
 import bank from './bank';
+import cashFlow from './cash-flow';
 import categoryModule from './category';
 import billModule from './bill';
 import {CategoryRevenue, CategoryExpense} from '../services/resources'
@@ -26,6 +27,7 @@ export default new Vuex.Store({
 		categoryRevenue,
 		categoryExpense,
 		billPay,
-		billReceive
+		billReceive,
+		cashFlow
 	}
 });

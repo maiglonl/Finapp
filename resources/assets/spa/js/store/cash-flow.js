@@ -1,12 +1,17 @@
 import {CashFlow} from '../services/resources';
+import moment from 'moment';
 
 const state = {
-	cashFlows: []
+	cashFlows: [],
+	firstMonthYear: null
 };
 
 const mutations = {
 	set(state, cashFlows){
 		state.cashFlows = cashFlows;
+	},
+	setFirstMonthYear(state, date){
+		state.firstMonthYear = moment(date).startOf('day').subtract(1, 'months').format('YYYY-MM');
 	}
 };
 
@@ -19,27 +24,71 @@ const actions = {
 };
 
 const getters = {
-	filterBankAccountByName(state){
-		return (name) => {
-			let bankAccounts = _.filter(state.lists, (o) => {
-				return _.includes(o.name.toLowerCase(), name.toLowerCase());
-			});
-			return bankAccounts;
+	indexSecondMonth(state, getters){
+		return getters.hasFirstMonthYear ? 1 : 0;
+	},
+	filterMonthYear(state){
+		return (monthYear) => {
+			if(state.cashFlows.hasOwnProperty('months_list')){
+				return state.cashFlows.months_list.filter((item) => {
+					return item.month_year == monthYear;
+				});
+			}
+			return [];
 		}
 	},
-	mapBankAccounts(state, getters){
-		return (name) => {
-			let bankAccounts = getters.filterBankAccountByName(name);
-			return bankAccounts.map((o) => {
-				return {id: o.id, text: getters.textAutocomplete(o)};
-			});
+	hasFirstMonthYear(state, getters){
+		return getters.filterMonthYear(state.firstMonthYear).length > 0;
+	},
+	firstBalance(state, getters){
+		let balanceBeforeFirstMonth = state.cashFlows.balance_before_first_month;
+		let balanceFirstMonth = 0;
+		if(getters.hasFirstMonthYear){
+			let firstMonthYear = getters.filterMonthYear(state.firstMonthYear);
+			balanceFirstMonth = firstMonthYear[0].revenues.total - firstMonthYear[0].expenses.total;
+		}
+		return balanceBeforeFirstMonth + balanceFirstMonth;
+	},
+	secondBalance(state, getters){
+		let firstBalance = getters.firstBalance;
+		let indexSecondMonth = getters.indexSecondMonth;
+		let secondMonthYear = state.cashFlows.months_list[indexSecondMonth].month_year;
+		let secondMonthObj = getters.filterMonthYear(secondMonthYear)[0];
+		return firstBalance + secondMonthObj.revenues.total - secondMonthObj.expenses.total
+	},
+	monthsListBalanceFinal(state, getters){
+		let length = state.cashFlows.months_list.length;
+		return state.cashFlows.months_list.slice(getters.indexSecondMonth + 1, length);
+	},
+	hasCashFlows(state){
+		return state.cashFlows != null && state.cashFlows.months_list && state.cashFlows.months_list.length > 1;
+	},
+	balance(state, getters){
+		return (index) => {
+			return getters._calculateBalance(index + getters.indexSecondMonth + 1);
 		}
 	},
-	textAutocomplete(state){
-		return (bankAccount) => {
-			return `${bankAccount.name} - ${bankAccount.account}`;
+	_calculateBalance(state, getters){
+		return (index) => {
+			let indexSecondMonth = getters.indexSecondMonth;
+			let previousIndex = index - 1;
+			let previousBalance = 0;
+			switch(previousIndex){
+				case 0: 
+					previousBalance = indexSecondMonth === 0 ? getters.secondBalance : getters.firstBalance; 
+					break;
+				case 1: 
+					previousBalance = indexSecondMonth === 1 ? getters.secondBalance : getters._calculateBalance(previousIndex); 
+					break;
+				default: 
+					previousBalance = getters._calculateBalance(previousBalance);
+					break;
+			}
+			let monthYear = state.cashFlows.months_list[index].month_year;
+			let monthObj = getters.filterMonthYear(monthYear)[0];
+			return previousBalance + monthObj.revenues.total - monthObj.expenses.total
 		}
-	},
+	}
 };
 
 const module = {

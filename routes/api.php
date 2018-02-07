@@ -28,7 +28,7 @@ Route::group(['middleware' => ['cors', 'api'], 'as' => 'api.'], function(){
 		Route::resource('bill_pays', 'Api\BillPaysController');
 		Route::resource('bill_receives', 'Api\BillReceivesController', ['except' => ['create', 'edit']]);
 		Route::post('/logout', 'Api\AuthController@logout')->name('logout');
-		Route::get('cash_flows', 'Api\StatementsController@index');
+		Route::get('cash_flows', 'Api\CashFlowsController@index');
 		Route::get('/user', function(Request $request){
 			return $request->user('api');
 		})->name('user');
