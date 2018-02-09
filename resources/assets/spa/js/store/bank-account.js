@@ -6,7 +6,7 @@ const state = {
 	bankAccounts: [],
 	lists: [],
 	bankAccountDelete: null,
-	searchOptions: new SearchOptions('bank'),
+	searchOptions: new SearchOptions('bank')
 };
 
 const mutations = {
@@ -28,10 +28,16 @@ const mutations = {
 		let sort = state.searchOptions.order.sort;
 		state.searchOptions.order.sort = sort == 'asc' ? 'desc' : 'asc';
 	},
+	setSort(state, sort){
+		state.searchOptions.order.sort = sort;
+	},
 	setCurrentPage(state, currentPage){
 		state.searchOptions.pagination.current_page = currentPage;
 	},
-	setFilter(rstate, filter){
+	setLimit(state, limit){
+		state.searchOptions.limit = limit;
+	},
+	setFilter(state, filter){
 		state.searchOptions.search = filter;
 	},
 	setPagination(state, pagination){

@@ -60,6 +60,10 @@ const getters = {
 		let length = state.cashFlows.months_list.length;
 		return state.cashFlows.months_list.slice(getters.indexSecondMonth + 1, length);
 	},
+	monthsListBalancePrevious(state, getters){
+		let length = state.cashFlows.months_list.length;
+		return state.cashFlows.months_list.slice(getters.indexSecondMonth + 2, length);
+	},
 	hasCashFlows(state){
 		return state.cashFlows != null && state.cashFlows.months_list && state.cashFlows.months_list.length > 1;
 	},
@@ -81,12 +85,20 @@ const getters = {
 					previousBalance = indexSecondMonth === 1 ? getters.secondBalance : getters._calculateBalance(previousIndex); 
 					break;
 				default: 
-					previousBalance = getters._calculateBalance(previousBalance);
+					previousBalance = getters._calculateBalance(previousIndex);
 					break;
 			}
 			let monthYear = state.cashFlows.months_list[index].month_year;
 			let monthObj = getters.filterMonthYear(monthYear)[0];
-			return previousBalance + monthObj.revenues.total - monthObj.expenses.total
+			return previousBalance + monthObj.revenues.total - monthObj.expenses.total;
+		}
+	},
+	categoryTotal(state, getters){
+		return (category, monthYear) => {
+			let monthYearResult = category.months.filter(item => {
+				return item.month_year == monthYear
+			});
+			return monthYearResult.length === 0 ? { total: '' } : monthYearResult[0];
 		}
 	}
 };

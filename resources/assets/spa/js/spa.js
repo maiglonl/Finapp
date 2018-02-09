@@ -14,6 +14,8 @@ Vue.use(Vuex);
 
 Vue.http.options.root = appConfig.api_url;
 
+require('./echo');
+
 require('./services/interceptors');
 
 var router = require('./router').default;

@@ -8,6 +8,7 @@ use Finapp\Repositories\BankAccountRepository;
 use Finapp\Presenters\BankAccountPresenter;
 use Finapp\Models\BankAccount;
 use Finapp\Criteria\LockTableCriteria;
+use Finapp\Events\BankAccountBalanceUpdatedEvent;
 
 /**
  * Class BankAccountRepositoryEloquent
@@ -32,6 +33,7 @@ class BankAccountRepositoryEloquent extends BaseRepository implements BankAccoun
 		$model->balance += $value;
 		$model->save();
 		\DB::commit();
+		broadcast(new BankAccountBalanceUpdatedEvent($model));
 		$this->popCriteria(LockTableCriteria::class);
 		$this->skipPresenter = $skipPresenter;
 		return $this->parserResult($model);

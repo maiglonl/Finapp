@@ -3,12 +3,13 @@
 namespace Finapp\Http\Controllers\Api;
 
 use Finapp\Http\Controllers\Controller;
-use Finapp\Http\Controllers\Response;
 use Finapp\Http\Requests\BankAccountCreateRequest;
 use Finapp\Http\Requests\BankAccountUpdateRequest;
 use Finapp\Repositories\BankAccountRepository;
 use Finapp\Criteria\FindByNameCriteria;
 use Finapp\Criteria\FindByAgencyCriteria;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 
 class BankAccountsController extends Controller{
@@ -32,8 +33,10 @@ class BankAccountsController extends Controller{
 	 *
 	 * @return \Illuminate\Http\Response
 	 */
-	public function index(){
-		$bankAccounts = $this->repository->paginate();
+	public function index(Request $request){
+		$limit = (int) $request->get('limit', null);
+		$limit = $limit > 0 ? $limit : null;
+		$bankAccounts = $this->repository->paginate($limit);
 		return $bankAccounts;
 	}
 

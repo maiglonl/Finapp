@@ -178,7 +178,7 @@ return [
          */
         Finapp\Providers\AppServiceProvider::class,
         Finapp\Providers\AuthServiceProvider::class,
-        // Finapp\Providers\BroadcastServiceProvider::class,
+        Finapp\Providers\BroadcastServiceProvider::class,
         Finapp\Providers\EventServiceProvider::class,
         Finapp\Providers\RouteServiceProvider::class,
         Finapp\Providers\RepositoryServiceProvider::class,

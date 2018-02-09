@@ -2,12 +2,12 @@
 
 namespace Finapp\Http\Controllers\Api;
 
-use Carbon\Carbon;
+use Finapp\Criteria\FindBetweenDateBRCriteria;
 use Finapp\Http\Controllers\Controller;
-use Finapp\Http\Controllers\Response;
 use Finapp\Repositories\StatementRepository;
+use Illuminate\Http\Request;
 
-class StatementsController extends Controller{
+class StatementsController extends Controller {
 
 	/**
 	 * @var StatementRepository
@@ -23,7 +23,11 @@ class StatementsController extends Controller{
 	 *
 	 * @return \Illuminate\Http\Response
 	 */
-	public function index(){
+	public function index(Request $request){
+		$searchParam = condig('repository.criteria.params.search');
+		$search = $request->get($searchParam);
+		$this->repository
+			->pushCriteria(new FindBetweenDateBRCriteria($search, 'created_at'));
 		$statements = $this->repository->paginate();
 		return $statements;
 	}

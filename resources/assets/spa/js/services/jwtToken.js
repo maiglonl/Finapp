@@ -12,7 +12,8 @@ export default {
 	},
 	_events: {
 		'updateToken': []
-	},accessToken(email,password){
+	},
+	accessToken(email,password){
 		return Jwt.accessToken(email, password).then((response)=>{
 			this.token = response.data.token;
 			this._callEventUpdateToken(this.token);
