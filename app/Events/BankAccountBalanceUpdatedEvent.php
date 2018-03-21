@@ -23,8 +23,6 @@ class BankAccountBalanceUpdatedEvent implements ShouldBroadcast {
 	 * @return Channel|array
 	 */
 	public function broadcastOn(){
-		error_log("client.{$this->bankAccount->client_id}");
-
 		return new PrivateChannel("client.".$this->bankAccount->client_id);
 	}
 

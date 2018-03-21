@@ -36,53 +36,53 @@ trait CashFlowRepositoryTrait{
 		$arrayResult = [];
 		foreach ($categories as $id => $name) {
 			$filtered = $collection->where('id', $id)->where('name', $name);
-			$monthsYear = [];
-			$filtered->each(function($category) use(&$monthsYear){
-				$monthsYear[] = [
+			$periods = [];
+			$filtered->each(function($category) use(&$periods){
+				$periods[] = [
 					'total' => $category->total,
-					'month_year' => $category->month_year
+					'period' => $category->period
 				];
 			});
 			$arrayResult[] = [
 				'id' => $id,
 				'name' => $name,
-				'months' => $monthsYear
+				'periods' => $periods
 			];
 		}
 		return $arrayResult;
 	}
 
-	protected function formatMonthsYear($expensesCollection, $revenuesCollection){
-		$monthsYearRevenueCollection = $revenuesCollection->pluck('month_year');
-		$monthsYearExpenseCollection = $expensesCollection->pluck('month_year');
-		$monthsYearsCollection = $monthsYearExpenseCollection->merge($monthsYearRevenueCollection)->unique()->sort();
-		$monthsYearList = [];
-		$monthsYearsCollection->each(function($monthYear) use(&$monthsYearList){
-			$monthsYearList[$monthYear] = [
-				'month_year' => $monthYear,
+	protected function formatPeriods($expensesCollection, $revenuesCollection){
+		$periodRevenueCollection = $revenuesCollection->pluck('period');
+		$periodExpenseCollection = $expensesCollection->pluck('period');
+		$periodsCollection = $periodExpenseCollection->merge($periodRevenueCollection)->unique()->sort();
+		$periodList = [];
+		$periodsCollection->each(function($period) use(&$periodList){
+			$periodList[$period] = [
+				'period' => $period,
 				'revenues' => ['total' => 0],
 				'expenses' => ['total' => 0]
 			];
 		});
 
-		foreach ($monthsYearRevenueCollection as $monthYear) {
-			$monthsYearList[$monthYear]['revenues']['total'] = $revenuesCollection->where('month_year', $monthYear)->sum('total');
+		foreach ($periodRevenueCollection as $period) {
+			$periodList[$period]['revenues']['total'] = $revenuesCollection->where('period', $period)->sum('total');
 		}
-		foreach ($monthsYearExpenseCollection as $monthYear) {
-			$monthsYearList[$monthYear]['expenses']['total'] = $expensesCollection->where('month_year', $monthYear)->sum('total');
+		foreach ($periodExpenseCollection as $period) {
+			$periodList[$period]['expenses']['total'] = $expensesCollection->where('period', $period)->sum('total');
 		}
 
-		return array_values($monthsYearList);
+		return array_values($periodList);
 	}
 
 	protected function formatCashFlow($expensesCollection, $revenuesCollection, $balancePreviousMonth){
-		$monthsYearList = $this->formatMonthsYear($expensesCollection, $revenuesCollection);
+		$periodList = $this->formatPeriods($expensesCollection, $revenuesCollection);
 		$expensesFormatted = $this->formatCategories($expensesCollection);
 		$revenuesFormatted = $this->formatCategories($revenuesCollection);
 		$collectionFormatted = [
-			'months_list' => $monthsYearList,
+			'period_list' => $periodList,
 			'balance_before_first_month' => $balancePreviousMonth,
-			'categories_months' => [
+			'categories_period' => [
 				'expenses' => [
 					'data' => $expensesFormatted
 				],
@@ -127,7 +127,7 @@ trait CashFlowRepositoryTrait{
 			->addSelect("$table.id")
 			->addSelect("$table.name")
 			->selectRaw("SUM(value) as total")
-			->selectRaw("DATE_FORMAT(date_due, '%Y-%m') as month_year")
+			->selectRaw("DATE_FORMAT(date_due, '%Y-%m') as period")
 			->join("$table as child", function($join) use($table, $lft, $rgt){
 				$join->on("$table.$lft", "<=", "child.$lft")
 					->whereRaw("$table.$rgt >= child.$rgt");
@@ -135,9 +135,9 @@ trait CashFlowRepositoryTrait{
 			->join($billTable, "$billTable.category_id", '=', 'child.id')
 			->selectSub($this->getQueryWithDepth($model), 'depth')
 			->whereBetween('date_due', [$dateStart, $dateEnd])
-			->groupBy("$table.id", "$table.name", "month_year")
+			->groupBy("$table.id", "$table.name", "period")
 			->havingRaw("depth = 0")
-			->orderBy("month_year")
+			->orderBy("period")
 			->orderBy("$table.name");
 	}
 

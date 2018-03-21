@@ -18,6 +18,7 @@
 
 <script>
 	import store from '../store/store';
+	import {User} from '../services/resources';
 	export default {
 		computed:{
 			bankAccounts(){
@@ -39,10 +40,30 @@
 				store.dispatch('bankAccount/query');
 			},
 			echo(){
-				Echo.private(`client.${this.clientId}`)
-					.listen('.Finapp.Events.BankAccountBalanceUpdatedEvent', (event) => {
-						console.log('event launched');
-					})
+				User.get().then((response) => {
+					Echo.private(`client.${response.data.client_id}`)
+						.listen('.Finapp.Events.BankAccountBalanceUpdatedEvent', (event)=>{
+							this.updateBalance(event.bankAccount);
+						});
+				})
+			},
+			findIndexBankAccount(id){
+				let index = this.bankAccounts.findIndex(item => {
+					return item.id == id
+				});
+				return index;
+			},
+			updateBalance(bankAccount){
+				let index = this.findIndexBankAccount(bankAccount.id);
+				if(index != -1){
+					store.commit('bankAccount/updateBalance', {
+						index,
+						balance: bankAccount.balance
+					});
+				}
+				let balance = this.$options.filters.numberFormat(bankAccount.balance, true);
+				let message = `Novo saldo de ${bankAccount.name} | ${balance}.`;
+				Materialize.toast(messave);
 			}
 		}
 	}

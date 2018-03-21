@@ -16,7 +16,7 @@
 				return store.state.cashFlow.cashFlows; 
 			},
 			monthsList(){ 
-				return this.cashFlows.months_list; 
+				return this.cashFlows.period_list; 
 			},
 			hasFirstMonthYear(){ 
 				return store.getters['cashFlow/hasFirstMonthYear']; 
@@ -43,7 +43,7 @@
 				return this.cashFlows.balance_before_first_month; 
 			},
 			categoriesMonths(){
-				return this.cashFlows.categories_months;
+				return this.cashFlows.categories_period;
 			}
 		},
 		mounted() {
