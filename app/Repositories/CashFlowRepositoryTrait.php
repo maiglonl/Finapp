@@ -10,6 +10,32 @@ use Finapp\Models\CategoryRevenue;
 
 trait CashFlowRepositoryTrait{
 
+	public function getCashFlowByPeriod(Carbon $dateStart, Carbon $dateEnd){
+		$dateFormat = '%Y-%m-%d';
+		$dateStartStr = $dateStart->format('Y-m-d');
+		$dateEndStr = $dateEnd->format('Y-m-d');
+
+		$revenuesCollection = $this->getQueryCategoriesValuesByPeriod(
+			new CategoryRevenue(),
+			(new BillReceive())->getTable(),
+			$dateStartStr,
+			$dateEndStr,
+			$dateFormat
+		)->get();
+
+		$expensesCollection = $this->getQueryCategoriesValuesByPeriod(
+			new CategoryExpense(),
+			(new BillPay())->getTable(),
+			$dateStartStr,
+			$dateEndStr,
+			$dateFormat
+		)->get();
+
+		return [
+			'period_list' => $this->formatPeriods($expensesCollection, $revenuesCollection)
+		];
+	}
+
 	public function getCashFlow(Carbon $dateStart, Carbon $dateEnd){
 		$datePrevious = $dateStart->copy()->day(1)->subMonths(2);
 		$datePrevious->day($datePrevious->daysInMonth);
@@ -120,14 +146,14 @@ trait CashFlowRepositoryTrait{
 	}
 
 
-	protected function getQueryCategoriesValuesByPeriod($model, $billTable, $dateStart, $dateEnd){
+	protected function getQueryCategoriesValuesByPeriod($model, $billTable, $dateStart, $dateEnd, $dateFormat='%Y-%m'){
 		$table = $model->getTable();
 		list($lft, $rgt) = [$model->getLftName(), $model->getRgtName()];
 		return $model
 			->addSelect("$table.id")
 			->addSelect("$table.name")
 			->selectRaw("SUM(value) as total")
-			->selectRaw("DATE_FORMAT(date_due, '%Y-%m') as period")
+			->selectRaw("DATE_FORMAT(date_due, '$dateFormat') as period")
 			->join("$table as child", function($join) use($table, $lft, $rgt){
 				$join->on("$table.$lft", "<=", "child.$lft")
 					->whereRaw("$table.$rgt >= child.$rgt");

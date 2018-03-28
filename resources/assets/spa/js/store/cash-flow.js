@@ -2,13 +2,17 @@ import {CashFlow} from '../services/resources';
 import moment from 'moment';
 
 const state = {
-	cashFlows: [],
-	firstMonthYear: null
+	cashFlows: null,
+	firstMonthYear: null,
+	cashFlowsMonthly: null
 };
 
 const mutations = {
 	set(state, cashFlows){
 		state.cashFlows = cashFlows;
+	},
+	setMonthly(state, cashFlows){
+		state.cashFlowsMonthly = cashFlows;
 	},
 	setFirstMonthYear(state, date){
 		state.firstMonthYear = moment(date).startOf('day').subtract(1, 'months').format('YYYY-MM');
@@ -19,6 +23,11 @@ const actions = {
 	query(context){
 		return CashFlow.query().then(response => {
 			context.commit('set', response.data);
+		});
+	},
+	monthly(context){
+		return CashFlow.monthly().then(response => {
+			context.commit('setMonthly', response.data);
 		});
 	}
 };
@@ -66,6 +75,9 @@ const getters = {
 	},
 	hasCashFlows(state){
 		return state.cashFlows != null && state.cashFlows.period_list && state.cashFlows.period_list.length > 1;
+	},
+	hasCashFlowsMonthly(state){
+		return state.cashFlowsMonthly != null && state.cashFlowsMonthly.period_list && state.cashFlowsMonthly.period_list.length > 1;
 	},
 	balance(state, getters){
 		return (index) => {

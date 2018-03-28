@@ -52,6 +52,7 @@
 		data(){
 			return {
 				menus: [
+					{ name: "Dashboard", routeName: 'dashboard'},
 					{ name: "Conta bancária", routeName: 'bank-account.list'},
 					{ name: "Plano de Contas", routeName: 'plan-account'},
 					{ name: "Fluxo de caixa", routeName: 'cash-flow.list'},
@@ -110,3 +111,11 @@
 	};
 </script>
 
+<style type="text/css" scoped>
+	nav ul a{
+		font-size: 0.8rem; 
+	}
+	.brand-logo{
+		font-size: 1.3rem; 
+	}
+</style>

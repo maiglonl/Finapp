@@ -30,18 +30,16 @@ trait BillRepositoryTrait{
 		return $this->parserResult($model);
 	}
 
-    /**
-     * Boot up the repository, pushing criteria
-     */
-    public function boot()
-    {
-        $this->pushCriteria(app(RequestCriteria::class));
-    }
+	/**
+	 * Boot up the repository, pushing criteria
+	 */
+	public function boot(){
+		$this->pushCriteria(app(RequestCriteria::class));
+	}
 
-    public function presenter()
-    {
-    	return BillPresenter::class;
-    }
+	public function presenter(){
+		return BillPresenter::class;
+	}
 
 	protected function repeatBill(array $attributes){
 		if(isset($attributes['repeat'])){
