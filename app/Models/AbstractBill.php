@@ -8,7 +8,6 @@ use Kalnoy\Nestedset\NodeTrait;
 use Prettus\Repository\Contracts\Transformable;
 use Prettus\Repository\Traits\TransformableTrait;
 use Finapp\Models\BankAccount;
-use Finapp\Models\CategoryExpense;
 use Finapp\Models\Statement;
 
 abstract class AbstractBill extends Model implements Transformable, BillRepeatTypeInterface{
@@ -35,9 +34,6 @@ abstract class AbstractBill extends Model implements Transformable, BillRepeatTy
     	return $this->belongsTo(BankAccount::class);
     }
 
-    public function category(){
-    	return $this->belongsTo(CategoryExpense::class);
-    }
 
     public function statements(){
     	return $this->morphMany(Statement::class, 'statementable');

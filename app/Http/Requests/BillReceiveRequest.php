@@ -39,7 +39,7 @@ class BillReceiveRequest extends FormRequest
 				->where(function($query) use($client) {
 					$query->where('client_id', $client->id);
 				}),
-			'repeat_number' => 'required_if:repeat,true|integer|min=0',
+			'repeat_number' => 'required_if:repeat,true|integer|min:0',
 			'repeat_type' => 'required_if:repeat,true|in:1,2'
 		];
 	}

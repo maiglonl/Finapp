@@ -2,7 +2,7 @@
 	<div>
 		<div class="row">
 			<page-title>
-				<h5>Minhas contas à receber</h5>
+				<h5>Minhas contas à pagar</h5>
 			</page-title>
 			<div class="card-panel z-depth-5">
 				<search></search>
@@ -49,8 +49,8 @@
 		<bill-receive-create :modal-options="modalCreate"></bill-receive-create>
 		<bill-receive-update :index="indexUpdate" :modal-options="modalEdit"></bill-receive-update>
 
-		<modal :modal="modalDelete" v-if="billReceiveDelete">
-			<div slot="content">
+		<modal :modal="modalDelete">
+			<div slot="content" v-if="billReceiveDelete">
 				<h4>Mensagem de confirmação</h4>
 				<p>Deseja excluir a conta?</p>
 				<div class="divider"></div>
@@ -105,7 +105,7 @@
 						value: {label: 'Valor', width: '13%'},
 					}
 				}
-			};
+			}
 		},
 		computed: {
 			bills(){
@@ -129,7 +129,7 @@
 		created(){
 			store.dispatch('billReceive/query');
 			store.dispatch('bankAccount/lists');
-			store.dispatch('categoryRevenue/query');
+			store.dispatch('categoryExpense/query');
 			EventHub.$on('pageChanged', this.changePage);
 			EventHub.$on('searchSubmit', this.filter);
 		},
