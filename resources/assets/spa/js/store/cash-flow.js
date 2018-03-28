@@ -95,7 +95,7 @@ const getters = {
 	},
 	categoryTotal(state, getters){
 		return (category, monthYear) => {
-			let monthYearResult = category.months.filter(item => {
+			let monthYearResult = category.periods.filter(item => {
 				return item.period == monthYear
 			});
 			return monthYearResult.length === 0 ? { total: '' } : monthYearResult[0];
