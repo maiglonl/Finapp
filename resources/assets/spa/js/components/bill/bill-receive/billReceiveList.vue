@@ -38,6 +38,7 @@
 					:total-records="searchOptions.pagination.total"
 					:current-page="searchOptions.pagination.current_page">
 				</pagination>
+				<bill-data namespace="billReceive"></bill-data>
 			</div>
 			<div class="fixed-action-btn">
 				<a href="#" class="btn-floating btn-large" @click.prevent="openModalCreate()">
@@ -74,6 +75,7 @@
 	import SearchComponent from '../../search.vue';
 	import BillReceiveCreateComponent from './billReceiveCreate.vue';
 	import BillReceiveUpdateComponent from './billReceiveUpdate.vue';
+	import BillDataComponent from '../billData.vue';
 	import store from '../../../store/store';
 
 	export default {
@@ -83,7 +85,8 @@
 			'page-title': PageTitleComponent,
 			'search': SearchComponent,
 			'bill-receive-create': BillReceiveCreateComponent,
-			'bill-receive-update': BillReceiveUpdateComponent
+			'bill-receive-update': BillReceiveUpdateComponent,
+			'bill-data': BillDataComponent
 		},
 		data() {
 			return {

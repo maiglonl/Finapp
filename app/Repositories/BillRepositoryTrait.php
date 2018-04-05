@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use Prettus\Repository\Criteria\RequestCriteria;
 use Finapp\Presenters\BillPresenter;
 use Finapp\Events\BillStoredEvent;
+use Finapp\Serializers\BillSerializer;
 
 trait BillRepositoryTrait{
 
@@ -39,6 +40,56 @@ trait BillRepositoryTrait{
 
 	public function presenter(){
 		return BillPresenter::class;
+	}
+
+	public function paginate($limit = null, $columns = ['*'], $method="paginate"){
+		$skipPresenter = $this->skipPresenter;
+		$this->skipPresenter();
+		$collection = parent::paginate($limit, $columns, $method);
+		$this->skipPresenter($skipPresenter);
+		return $this->parserResult(new BillSerializer($collection, $this->formatBillsData()));
+	}
+
+	public function getTotalFromPeriod(Carbon $dateStart, Carbon $dateEnd){
+		$result = $this->getQueryTotal()
+			->whereBetween('date_due', [$dateStart->format('Y-m-d'), $dateEnd->format('Y-m-d')])
+			->get();
+		return [
+			'total' => (float)$result->first()->total
+		];
+	}
+
+	protected function getTotalByDone($done){
+		$result = $this->getQueryTotalByDone($done)->get();
+		return (float)$result->first()->total;
+	}
+
+	protected function getQueryTotal(){
+		$this->resetModel();
+		$this->applyCriteria();
+		return $this->model->selectRaw('SUM(value) as total');
+	}
+
+	protected function getQueryTotalByDone($done){
+		return $this->getQueryTotal()->where('done', '=', $done);
+	}
+
+	protected function getTotalExpired(){
+		$result = $this->getQueryTotalByDone(0)
+			->where('date_due', '<', (new Carbon())->format('Y-m-d'))
+			->get();
+		return (float)$result->first()->total;
+	}
+
+	protected function formatBillsData(){
+		$paid = $this->getTotalByDone(1);
+		$toPay = $this->getTotalByDone(0);
+		$expired = $this->getTotalExpired();
+		return[
+			'total_paid' => $paid,
+			'total_to_pay' => $toPay,
+			'total_expired' => $expired
+		];
 	}
 
 	protected function repeatBill(array $attributes){

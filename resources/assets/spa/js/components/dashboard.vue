@@ -21,7 +21,7 @@
 							<div>A receber hoje</div>
 							<h3 id="revenue-number" class="green-text center">R$0,00</h3>
 							<div class="left">Restante do mês</div>
-							<div class="right">R$0,00</div>
+							<div class="right">{{totalRestOfMonthReceive | numberFormat(true)}}</div>
 						</div>
 					</div>
 				</div>
@@ -44,9 +44,9 @@
 						</div>
 						<div v-show="!loadingExpense">
 							<div>A pagar hoje</div>
-							<h3 id="revenue-number" class="green-text center">R$0,00</h3>
+							<h3 id="expense-number" class="green-text center">R$0,00</h3>
 							<div class="left">Restante do mês</div>
-							<div class="right">R$0,00</div>
+							<div class="right">{{totalRestOfMonthPay | numberFormat(true)}}</div>
 						</div>
 					</div>
 				</div>
@@ -125,9 +125,6 @@
 			bankAccounts(){
 				return store.state.bankAccount.bankAccounts;
 			},
-			clientId(){
-				return store.state.auth.user.client_id;
-			},
 			cashFlows(){
 				return store.state.cashFlow.cashFlowsMonthly;
 			},
@@ -136,6 +133,18 @@
 			},
 			hasCashFlowsMonthly(){
 				return store.getters['cashFlow/hasCashFlowsMonthly'];
+			},
+			totalTodayReceive(){
+				return store.state.billReceive.total_today;
+			},
+			totalRestOfMonthReceive(){
+				return store.state.billReceive.total_rest_of_month;
+			},
+			totalTodayPay(){
+				return store.state.billPay.total_today;
+			},
+			totalRestOfMonthPay(){
+				return store.state.billPay.total_rest_of_month;
 			},
 			chartOptions(){
 				let self = this;
@@ -194,10 +203,25 @@
 					Materialize.showStaggeredList('#bank-account-list');
 				});
 				store.dispatch('cashFlow/monthly');
-				store.dispatch('bankAccount/query').then(function(){
+
+				store.dispatch('billReceive/totalRestOfMonth');
+				store.dispatch('billReceive/totalToday').then(function(){
 					self.loadingRevenue = false;
 					$("#revenue-number").animateNumber({
-						number: 1500.30,
+						number: self.totalTodayReceive,
+						numberStep(now, tween){
+							let number = self.$options.filters.numberFormat(now, true);
+							$(tween.elem).text(number);
+						}
+					}, 1000);
+					Materialize.showStaggeredList('#bank-account-list');
+				});
+
+				store.dispatch('billPay/totalRestOfMonth');
+				store.dispatch('billPay/totalToday').then(function(){
+					self.loadingExpense = false;
+					$("#revenue-number").animateNumber({
+						number: self.totalTodayPay,
 						numberStep(now, tween){
 							let number = self.$options.filters.numberFormat(now, true);
 							$(tween.elem).text(number);

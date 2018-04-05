@@ -10,6 +10,7 @@ use Finapp\Repositories\BillReceiveRepository;
 use Finapp\Criteria\FindByNameCriteria;
 use Finapp\Criteria\FindByValueBRCriteria;
 use Finapp\Criteria\FindBetweenDateBRCriteria;
+use Finapp\Presenters\BillReceiveSerializerPresenter;
 
 class BillReceivesController extends Controller {
 	protected $repository;
@@ -21,6 +22,7 @@ class BillReceivesController extends Controller {
 	public function index(Request $request){
 		$searchParam = config('repository.criteria.params.search');
 		$search = $request->get($searchParam);
+		$this->repository->setPresenter(BillReceiveSerializerPresenter::class);
 		$this->repository
 			->pushCriteria(new FindByNameCriteria($search))
 			->pushCriteria(new FindByValueBRCriteria($search))

@@ -27,7 +27,7 @@ class StatementSerializer implements Jsonable{
 		return $this->statementData;
 	}
 
-	public function getStatement(){
-		return $this->statement;
+	public function getStatements(){
+		return $this->statements;
 	}
 }

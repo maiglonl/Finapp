@@ -47,3 +47,17 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function(){
 		Route::resource('banks', 'Admin\BanksController', ['except' => 'show']);
 	});
 });
+
+Route::group(['prefix' => '/', 'as' => 'site.'], function(){
+	Route::get('/', function(){
+		return view('site.home');
+	})->name('home');
+
+	Route::get('register', 'Site\Auth\RegisterController@create')->name('auth.register.create');
+	Route::post('register', 'Site\Auth\RegisterController@store')->name('authregister.store');
+
+	Route::group(['prefix' => 'subscriptions', 'as' => 'subscriptions.'], function(){
+		Route::get('create', 'Site\SubscriptionsController@create')->name('create');
+		Route::post('store', 'Site\SubscriptionsController@store')->name('store');
+	});
+});
