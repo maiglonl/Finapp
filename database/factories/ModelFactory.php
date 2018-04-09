@@ -41,7 +41,8 @@ $factory->define(\Finapp\Models\BankAccount::class, function (Faker\Generator $f
 
 $factory->define(\Finapp\Models\Client::class, function (Faker\Generator $faker) {
 	return [
-		'name' => $faker->name
+		'name' => $faker->name,
+		'email' => $faker->unique()->safeEmail
 	];
 });
 

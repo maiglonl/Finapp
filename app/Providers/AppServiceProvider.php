@@ -33,5 +33,7 @@ class AppServiceProvider extends ServiceProvider
 
             return $instance->setBlacklistEnabled((bool) config('jwt.blacklist_enabled'));
         });
+
+        \Iugu::setApiKey(env('IUGU_API_KEY'));
     }
 }

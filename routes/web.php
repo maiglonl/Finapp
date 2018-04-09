@@ -54,10 +54,15 @@ Route::group(['prefix' => '/', 'as' => 'site.'], function(){
 	})->name('home');
 
 	Route::get('register', 'Site\Auth\RegisterController@create')->name('auth.register.create');
-	Route::post('register', 'Site\Auth\RegisterController@store')->name('authregister.store');
+	Route::post('register', 'Site\Auth\RegisterController@store')->name('auth.register.store');
 
 	Route::group(['prefix' => 'subscriptions', 'as' => 'subscriptions.'], function(){
 		Route::get('create', 'Site\SubscriptionsController@create')->name('create');
 		Route::post('store', 'Site\SubscriptionsController@store')->name('store');
 	});
+
+	Route::get('login', 'Site\Auth\LoginController@showLoginForm')->name('auth.login.login');
+	Route::post('login', 'Site\Auth\LoginController@store');
+	Route::post('logout', 'Site\Auth\LoginController@store');
+
 });

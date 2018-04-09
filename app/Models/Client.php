@@ -10,7 +10,7 @@ class Client extends Model implements Transformable
 {
     use TransformableTrait;
 
-    protected $fillable = ['name'];
+    protected $fillable = ['name', 'email', 'code'];
 
 	public function users(){
 		return $this->hasMany(User::class);

@@ -14,6 +14,15 @@ use Finapp\Validators\UserValidator;
  */
 class UserRepositoryEloquent extends BaseRepository implements UserRepository
 {
+
+	public function create(array $attributes)
+	{
+		$attributes['password'] = bcrypt($attributes['password']);
+		$model = parent::create($attributes);
+		return $model;
+	}
+
+
     /**
      * Specify Model class name
      *
