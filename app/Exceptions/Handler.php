@@ -62,7 +62,7 @@ class Handler extends ExceptionHandler{
 		if($request->is("admin/*")){
 			return redirect()->guest(env('URL_ADMIN_LOGIN'));
 		}else{
-			return redirect()->guest(route('URL_SITE_LOGIN'));
+			return redirect()->guest(env('URL_SITE_LOGIN'));
 		}
 	}
 }

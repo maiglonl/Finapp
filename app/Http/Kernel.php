@@ -53,5 +53,7 @@ class Kernel extends HttpKernel
         'can' => \Illuminate\Auth\Middleware\Authorize::class,
         'guest' => \Finapp\Http\Middleware\RedirectIfAuthenticated::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
+        'auth.from_token' => \Finapp\Http\Middleware\AuthenticateFromToken::class,
+        'check-subscription' => \Finapp\Http\Middleware\CheckSubscription::class,
     ];
 }

@@ -11060,6 +11060,10 @@ button.picker__today:focus, button.picker__clear:focus, button.picker__close:foc
   }
 }
 
+body {
+  background-color: #eceff1;
+}
+
 #app {
   display: -webkit-box;
   display: flex;

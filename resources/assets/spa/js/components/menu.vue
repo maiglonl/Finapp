@@ -39,7 +39,10 @@
 		</ul>
 		<ul id="dropdownLogout" class="dropdown-content">
 			<li>
-				<router-link :to="{name: 'logout' }">Logout</router-link>
+				<a href="#" @click.prevent="goToMyFinancial()">Meu financeiro</a>
+			</li>
+			<li>
+				<router-link :to="{ name: 'logout' }">Logout</router-link>
 			</li>
 		</ul>
 	</div>
@@ -47,6 +50,8 @@
 
 <script type="text/javascript">
 	import store from '../store/store';
+	import appConfig from '../services/appConfig';
+	import JwtToken from '../services/jwtToken';
 
 	export default {
 		data(){
@@ -72,7 +77,15 @@
 							{ name: "À Receber", routeName: 'bill-receive.list' },
 						]
 					},
-				]
+				],
+				methods: {
+					goToMyFinancial(){
+						window.open(
+							`${appConfig.my_financial_path}?token=${JwtToken.token}`,
+							'_blank'
+						)
+					}
+				}
 			}
 		},
 		computed: {

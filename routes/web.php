@@ -57,12 +57,19 @@ Route::group(['prefix' => '/', 'as' => 'site.'], function(){
 	Route::post('register', 'Site\Auth\RegisterController@store')->name('auth.register.store');
 
 	Route::group(['prefix' => 'subscriptions', 'as' => 'subscriptions.'], function(){
+		Route::get('successfully', 'Site\SubscriptionsController@successfully')->name('successfully');
 		Route::get('create', 'Site\SubscriptionsController@create')->name('create');
 		Route::post('store', 'Site\SubscriptionsController@store')->name('store');
 	});
 
+	Route::group(['prefix' => 'my-financial', 'as' => 'my-financial' ,'middleware' => 'auth.from_token'], function(){
+		Route::get('/', function(){
+			echo 'teste';
+		});
+	});
+
 	Route::get('login', 'Site\Auth\LoginController@showLoginForm')->name('auth.login.login');
-	Route::post('login', 'Site\Auth\LoginController@store');
-	Route::post('logout', 'Site\Auth\LoginController@store');
+	Route::post('login', 'Site\Auth\LoginController@login');
+	Route::post('logout', 'Site\Auth\LoginController@logout');
 
 });

@@ -6,9 +6,11 @@ use Illuminate\Support\Facades\Event;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 use Finapp\Events\BankStoredEvent;
 use Finapp\Events\BillStoredEvent;
+use Finapp\Events\IuguSubscriptionCreatedEvent;
 use Finapp\Listeners\BankLogoUploadListener;
 use Finapp\Listeners\BankAccountSetDefaultListener;
 use Finapp\Listeners\BankAccountUpdateBalanceListener;
+use Finapp\Listeners\SubscriptionCreateListener;
 use Prettus\Repository\Events\RepositoryEntityCreated;
 use Prettus\Repository\Events\RepositoryEntityUpdated;
 
@@ -31,6 +33,9 @@ class EventServiceProvider extends ServiceProvider{
 		],
 		RepositoryEntityUpdated::class => [
 			BankAccountSetDefaultListener::class 
+		],
+		IuguSubscriptionCreatedEvent::class => [
+			SubscriptionCreateListener::class 
 		]
 	];
 	/**

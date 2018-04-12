@@ -7,7 +7,7 @@ var VueResource = require('vue-resource');
 Vue.use(VueResource);
 
 var Vuex = require('vuex');
-require('./filters');
+require('../../_default/js/filters');
 require('./validators');
 
 Vue.use(Vuex);
